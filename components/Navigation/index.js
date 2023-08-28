@@ -17,16 +17,16 @@ const Navigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
-          {userInfo.data.token ? (
+          {userInfo.data ? (
             <>
-            <Stack.Screen name="storyHome" component={StoryHome} options={{headerShown: false}}/>
-            <Stack.Screen name="storyDetail" component={StoryDetail} options={{headerShown: false}}/>
-            <Stack.Screen name="storyList" component={StoryList} options={{headerShown: false}}/>
+            <Stack.Screen name="storyHome" component={StoryHome} options={{headerShown: false, orientation: 'landscape'}}/>
+            <Stack.Screen name="storyDetail" component={StoryDetail} options={{headerShown: false, orientation: 'landscape'}}/>
+            <Stack.Screen name="storyList" component={StoryList} options={{headerShown: false, orientation: 'landscape'}}/>
             </>
           ) : (
             <>
-             <Stack.Screen name="login" component={LoginScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="register" component={RegisterScreen} options={{headerShown: false}}/>
+             <Stack.Screen name="login" component={LoginScreen} options={{headerShown: false, orientation: 'portrait'}}/>
+            <Stack.Screen name="register" component={RegisterScreen} options={{headerShown: false, orientation: 'portrait'}}/>
             </>
           )}
         </Stack.Navigator>
