@@ -9,6 +9,7 @@ import SearchButton from '../../components/SearchButton';
 import BackButton from '../../components/BackButton';
 import LevelFilter from '../../components/LevelFilter';
 import LevelFilter2 from '../../components/LevelFilter2';
+import { BASE_URL } from '../../config';
 
 const blue = '#07B8EE';
 const purple = '#A69BD0';
@@ -17,7 +18,7 @@ const purple = '#A69BD0';
 export default function StoryList() {  
   const [storyData, setStoryData] = useState([]);
 
-  const getStories = () => {fetch('https://9aa7-222-252-17-100.ngrok-free.app/story')
+  const getStories = () => {fetch(BASE_URL + '/story')
                     .then(response => response.json())
                     .then(result => setStoryData(result))
                     .catch(e => console.log(e))} 
