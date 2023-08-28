@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 import Navigation from './components/Navigation';
-import {AuthProvider} from  './context/AuthContext'
+import { ContextAPI, APIProvider} from  './context/ContextAPI'
 
 export default function App() {
   return (
-    <AuthProvider>
+    <APIProvider>
         <Navigation /> 
-    </AuthProvider>
+    </APIProvider>
   );
 }
 
