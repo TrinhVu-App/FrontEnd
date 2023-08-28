@@ -6,24 +6,24 @@ import ReadButton from '../../components/ReadButton'
 import LibraryButton from '../../components/LibraryButton'
 import StoriesForYouButton from '../../components/StoriesForYouButton'
 
-const StoryHome = () => {
+const StoryHome = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topSection}>
         <Text style={styles.header}>Today's Story</Text>
         <View style={styles.storyButton}>
-          <StoryButton />
+          <StoryButton navigation={navigation}/>
         </View>
       </View>
       <View style={styles.bottomSection}>
         <View style={styles.storiesForYouButtonContainer}>
-          <StoriesForYouButton />
+          <StoriesForYouButton navigation={navigation}/>
         </View>
         <View style={styles.readButtonContainer}>
-          <ReadButton />
+          <ReadButton navigation={navigation}/>
         </View>
         <View style={styles.libraryButtonContainer}>
-          <LibraryButton />
+          <LibraryButton navigation={navigation}/>
         </View>
         <ImageBackground
           style={styles.imageBackground}

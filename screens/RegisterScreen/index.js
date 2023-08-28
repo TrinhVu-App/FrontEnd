@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, Image, TextInput, Button, Alert } from 'react
 import React, { useContext } from 'react'
 import styles from './styles'
 import { useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { ContextAPI } from '../../context/ContextAPI';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const RegisterScreen = () => {
@@ -11,7 +11,7 @@ const RegisterScreen = () => {
     const [password_confirmation, setPassword_confirmation] = useState(null);
     const [name, setName] = useState(null)
  
-    const {isLoading, register} = useContext(AuthContext)
+    const {isLoading, register} = useContext(ContextAPI)
     return (
         <SafeAreaView style={styles.container}>
             <Spinner visible={isLoading}/>

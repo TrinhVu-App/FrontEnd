@@ -2,13 +2,13 @@ import { View, Text, SafeAreaView, Image, TextInput, TouchableOpacity, Button, A
 import React, { useContext } from 'react'
 import styles from './styles'
 import { useState } from 'react'
-import { AuthContext } from '../../context/AuthContext'
+import { ContextAPI } from '../../context/ContextAPI'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const {isLoading, login} = useContext(AuthContext);
+  const {isLoading, login} = useContext(ContextAPI);
   // const [btn, onBtnPressed] = useState('')
   return (
     <SafeAreaView style={styles.container}>
