@@ -7,7 +7,6 @@ import styles from './styles';
 import HambergerMenu from '../../components/HamburgerMenu';
 import SearchButton from '../../components/SearchButton';
 import BackButton from '../../components/BackButton';
-import LevelFilter from '../../components/LevelFilter';
 import LevelFilter2 from '../../components/LevelFilter2';
 import { BASE_URL } from '../../config';
 
