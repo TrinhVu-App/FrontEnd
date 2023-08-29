@@ -7,19 +7,21 @@ import { Shadow } from 'react-native-shadow-2'
 import DownloadButton from '../../components/DownloadButton'
 import axios from 'axios'
 import { BASE_URL } from '../../config'
+import { useContext } from 'react'
+import { ContextAPI } from '../../context/ContextAPI'
+import Spinner from 'react-native-loading-spinner-overlay'
 
-const StoryDetail = ({id, navigation}) => {
-  console.log(id);
+const StoryDetail = ({navigation}) => {
   const [storyData, setStoryData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const { storyOfInterest } = useContext(ContextAPI);
   const getStory = () => {
     setIsLoading(true);
 
     axios
-      .get(`${BASE_URL}/story/${id}`)
+      .get(`${BASE_URL}/story/${storyOfInterest}`)
       .then(res => {
         let data = res.data;
-        console.log(data);
         setStoryData(data);
         setIsLoading(false);
       })
@@ -37,6 +39,7 @@ const StoryDetail = ({id, navigation}) => {
   // console.log(props.stories)
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner visible={isLoading} />
       <View style={styles.storyThumbContainer}>
         <Image 
           source={require('../../assets/MonkeyIcon.jpeg')}
