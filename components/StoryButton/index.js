@@ -4,14 +4,17 @@ import styles from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { ContextAPI } from '../../context/ContextAPI';
+import { useContext } from 'react';
 
 //'../../assets/MonkeyIcon.jpeg'
-const StoryButton = (props) => {
-    // const path = props.image;
+const StoryButton = ({navigation, storyData}) => {
+    const { storyDetailContext } = useContext(ContextAPI);
+
+    //TODO: set image to storydata thumbnail also
     const path = '../../assets/MonkeyIcon.jpeg';
-    const name = props.name;
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={()=> {storyDetailContext(storyData['id']); navigation.navigate('storyDetail')}}>
            
             <View style={styles.imageFrame}>
                 <Image
