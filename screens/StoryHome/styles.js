@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         marginTop: 35,
-        backgroundColor: '#61DAFB',
+        backgroundColor: '#61DAFB'
     },
     topSection: {
         backgroundColor: '#61DAFB',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // borderWidth: 1,
         // borderColor: 'black',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row'
     },
@@ -38,7 +38,9 @@ const styles = StyleSheet.create({
         // borderColor: 'black'
     },
     readButtonContainer: {
-        zIndex: 1
+        zIndex: 1,
+        paddingBottom: 35
+        
     },
     libraryButtonContainer: {
         zIndex: 1,

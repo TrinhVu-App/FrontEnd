@@ -1,26 +1,54 @@
 import { View, Text, SafeAreaView, Image, ImageBackground } from 'react-native'
 import StoryButton from '../../components/StoryButton'
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from './styles'
 import ReadButton from '../../components/ReadButton'
 import LibraryButton from '../../components/LibraryButton'
 import StoriesForYouButton from '../../components/StoriesForYouButton'
+import { useState } from 'react'
+import { ContextAPI } from '../../context/ContextAPI'
+import axios, { Axios } from 'axios'
+import { BASE_URL } from '../../config'
+import { useEffect } from 'react'
 
 const StoryHome = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [frontPageStory, setFrontPageStory] = useState({});
+  
+  const getFrontPageStory = () => {
+    setIsLoading(true);
+
+    axios
+      .get(`${BASE_URL}/story/1`)
+      .then(res => {
+        let data = res.data;
+        setFrontPageStory(data);
+        setIsLoading(false);
+      })
+      .catch(e => {
+        console.log(e);
+        setIsLoading(false);
+      })
+  }
+
+  useEffect(() => {
+    getFrontPageStory()
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topSection}>
         <Text style={styles.header}>Today's Story</Text>
         <View style={styles.storyButton}>
-          <StoryButton navigation={navigation}/>
+          <StoryButton storyData={frontPageStory} navigation={navigation}/>
         </View>
       </View>
       <View style={styles.bottomSection}>
-        <View style={styles.storiesForYouButtonContainer}>
+        {/* <View style={styles.storiesForYouButtonContainer}>
           <StoriesForYouButton navigation={navigation}/>
-        </View>
+        </View> */}
         <View style={styles.readButtonContainer}>
-          <ReadButton navigation={navigation}/>
+          <ReadButton storyData={frontPageStory} navigation={navigation}/>
         </View>
         <View style={styles.libraryButtonContainer}>
           <LibraryButton navigation={navigation}/>
