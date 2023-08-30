@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ContextAPI } from '../../context/ContextAPI';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation}) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [password_confirmation, setPassword_confirmation] = useState(null);
@@ -50,7 +50,7 @@ const RegisterScreen = () => {
             <Button
                 title='Register'
                 onPress={() => {
-                    register(name, email, password, password_confirmation)
+                    register(name, email, password, password_confirmation);
                 }}
             />
         </SafeAreaView>
