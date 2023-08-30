@@ -11,8 +11,6 @@ import { StyleSheet } from "react-native";
         width: 130,
         height: 130,
         borderRadius: 100,
-        borderWidth: 1,
-        borderColor: '#98CB3E',
         backgroundColor: '#98CB3E',
         justifyContent: 'center',
         alignItems: 'center',
