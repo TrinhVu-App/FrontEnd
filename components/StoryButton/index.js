@@ -6,19 +6,33 @@ import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { ContextAPI } from '../../context/ContextAPI';
 import { useContext } from 'react';
+import { BASE_URL } from '../../config';
 
 //'../../assets/MonkeyIcon.jpeg'
 const StoryButton = ({navigation, storyData}) => {
     const { storyDetailContext } = useContext(ContextAPI);
 
-    //TODO: set image to storydata thumbnail also
-    const path = '../../assets/MonkeyIcon.jpeg';
+    let storyID = 1; 
+    if (storyData) {
+        storyID = storyData["id"];
+    }
+    const thumbnailID = storyData['thumbnail'];
+
+    const setBookmarkPath = (storyData) => {
+        switch(storyData.level) {
+        case'A': return require("../../assets/bookmark-A.png");
+        case'B': return require("../../assets/bookmark-B.png");
+        case'C': return require("../../assets/bookmark-C.png");
+      }}
+    
+      const bookmark = setBookmarkPath(storyData);
+
     return (
         <TouchableOpacity style={styles.container} onPress={()=> {storyDetailContext(storyData['id']); navigation.navigate('storyDetail')}}>
            
             <View style={styles.imageFrame}>
                 <Image
-                    source={require(path)}
+                    source={{uri: `${BASE_URL}/story/image/${thumbnailID}`}}
                     style={styles.img}
                 />
             </View>
@@ -29,7 +43,7 @@ const StoryButton = ({navigation, storyData}) => {
                 <FontAwesomeIcon icon={faMicrophone} style={{ color: "#051fe6", }} size={21} />
             </View>
             <Image
-                source={require('../../assets/bookmark-A.png')}
+                source={bookmark}
                 style={styles.bookmark}
             />
         </TouchableOpacity>
