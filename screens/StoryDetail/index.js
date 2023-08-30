@@ -35,18 +35,25 @@ const StoryDetail = ({navigation}) => {
     getStory()
   }, [])
 
+  const setBookmarkPath = (storyData) => {
+    switch(storyData.level) {
+    case'A': return require("../../assets/bookmark-A.png");
+    case'B': return require("../../assets/bookmark-B.png");
+    case'C': return require("../../assets/bookmark-C.png");
+  }}
+
+  const bookmark = setBookmarkPath(storyData)
   
-  // console.log(props.stories)
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={isLoading} />
       <View style={styles.storyThumbContainer}>
         <Image 
-          source={require('../../assets/MonkeyIcon.jpeg')}
+          source={{uri: `${BASE_URL}/story/image/${storyData.thumbnail}`}}
           style={styles.storyThumb}
         />
         <Image 
-          source={require('../../assets/bookmark-A.png')}
+          source={bookmark}
           style={styles.bookmark}
         />
       </View> 
