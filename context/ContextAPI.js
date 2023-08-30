@@ -23,12 +23,8 @@ export const APIProvider = ({ children }) => {
                 password_confirmation
             })
             .then(res => {
-                let userInfo = res.data;
-                setUserInfo(userInfo);
-                AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
                 setIsLoading(false);
                 Alert.alert("Registration Successful", "You can now go to back to login screen to login!")
-                console.log(userInfo);
             })
             .catch(e => {
                 console.log(`Registration error: ${e}`);
