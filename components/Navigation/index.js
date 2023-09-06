@@ -8,6 +8,7 @@ import StoryHome from '../../screens/StoryHome';
 import StoryDetail from '../../screens/StoryDetail';
 import RegisterScreen from '../../screens/RegisterScreen';
 import { ContextAPI, APIProvider } from '../../context/ContextAPI';
+import PageViewScreen from '../../screens/PageViewScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name='pageView' component={PageViewScreen} options={{headerShown: false, orientation: 'landscape'}}/>
           {userInfo.data ? (
             <>
               <Stack.Screen name="storyHome" component={StoryHome} options={{headerShown: false, orientation: 'landscape'}}/>
