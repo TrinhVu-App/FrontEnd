@@ -4,12 +4,13 @@ import BackButton from '../../components/BackButton'
 import styles from './styles'
 import HeartButton from '../../components/HeartButton'
 import { Shadow } from 'react-native-shadow-2'
-import DownloadButton from '../../components/DownloadButton'
+import StartButton from '../../components/StartButton'
 import axios from 'axios'
 import { BASE_URL } from '../../config'
 import { useContext } from 'react'
 import { ContextAPI } from '../../context/ContextAPI'
 import Spinner from 'react-native-loading-spinner-overlay'
+import ReadButton from '../../components/ReadButton'
 
 const StoryDetail = ({navigation}) => {
   const [storyData, setStoryData] = useState({});
@@ -72,7 +73,7 @@ const StoryDetail = ({navigation}) => {
             </View>
         </View>
         <View style={styles.buttonContainer}>
-              <DownloadButton />           
+              <StartButton navigation={navigation}/>           
         </View>
         <View>
 
