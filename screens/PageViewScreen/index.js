@@ -70,7 +70,7 @@ const PageViewScreen = () => {
     lableWidth = font.getTextWidth(lableText)
   }
 
-  //process to play sounds
+  // process to play sounds
   async function playSound(audio) {
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(audio);
@@ -93,6 +93,8 @@ const PageViewScreen = () => {
   const cx = useValue(10);
   const cy = useValue(10);
   let timeoutID;
+  const  lableBgX = useValue(10);
+  const  lableBgY = useValue(10);
   const touchHander = useTouchHandler({
     onStart: ({ x, y }) => {
       const pointerCheck = itemsHitBoxCheck(x, y, itemsCord)
@@ -103,6 +105,8 @@ const PageViewScreen = () => {
         playSound(pointerCheck[2])
         cx.current = x - lableWidth / 2;
         cy.current = y;
+        lableBgX.current = x - lableWidth / 2 - 5;
+        lableBgY.current = y- fontSize +5;
       }
 
     },
@@ -113,8 +117,7 @@ const PageViewScreen = () => {
     }
   });
   
-  const lableBgX = cx.current 
-  let lableBgY = cy.current - fontSize +5
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -131,7 +134,7 @@ const PageViewScreen = () => {
         />
         {isShowingLable && (
           <Group>
-          <Rect x={lableBgX} y={lableBgY} color="gray" width={lableWidth + 5} height={fontSize + 5} />
+          <Rect x={lableBgX} y={lableBgY} color="gray" width={lableWidth + 10} height={fontSize + 5} />
           <Text text={lableText} x={cx} y={cy} font={font} color="white" />
           </Group>
         )}
