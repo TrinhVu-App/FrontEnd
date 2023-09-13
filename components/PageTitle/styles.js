@@ -3,13 +3,14 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     pageTitle: {
         position: 'absolute',
-        flexDirection: 'row',
+        justifyContent:'space-between',
+        alignItems:'center',
         top: "10%",
         zIndex: 1,
     },
     titleWord: {
         fontSize: 25,
-        color: "black"
+        color: "black",
     },
     titleWordHightlight: {
         color: "red",

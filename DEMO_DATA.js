@@ -53,10 +53,11 @@ export const IMAGE_RESOURCE = {
 export const DEMO_PAGE_DATA_1 = {
     ID: 1,
     background: 1,
-    title: "Hey, do you want to eat some salads?",
-    titleAudio: 18,
+    title: ["Hey, do you want to eat some salads?"],
+    titleAudio: [18],
+    titleAudioDuration: [3672],
     sync_data: [
-        {
+       [ {
             "e": 900,
             "s": 0,
             "te": 3,
@@ -111,63 +112,124 @@ export const DEMO_PAGE_DATA_1 = {
             "te": 35,
             "ts": 29,
             "w": "salads?"
-        }
+        }]
     ],
-    titleAudio: 18,
     touchables: [
         {
             name: "Salad bowl",
             audio: 29,
             position: {
-                x: 355,
-                y: 130
+                x: 266,
+                y: 96
             },
-            width: 95,
-            height: 70
+            width: 120,
+            height: 67
         },
         {
             name: "Boy",
             audio: 4,
             position: {
-                x: 275,
-                y: 280
+                x: 174,
+                y: 244
             },
-            width: 70,
-            height: 100
+            width: 92,
+            height: 163
         },
         {
             name: "Boy",
             audio: 4,
             position: {
-                x: 480,
-                y: 280
+                x: 398,
+                y: 243
             },
-            width: 70,
-            height: 100
+            width: 139,
+            height: 160
         },
         {
             name: "Fork",
             audio: 15,
             position: {
-                x: 425,
-                y: 206
+                x: 348,
+                y: 174
             },
-            width: 59,
+            width: 55,
             height: 6
         },
         {
             name: "Spoon",
             audio: 33,
             position: {
-                x: 326,
-                y: 196
+                x: 247,
+                y: 160
             },
-            width: 46,
-            height: 29
+            width: 53,
+            height: 28
         }
     ]
 }
 
+
+export const DEMO_PAGE_DATA_2 = {
+    ID: 2,
+    background:2,
+    title: ["Let's make a salad bowl!", "Sounds great!"],
+    titleAudio: [23, 31],
+    titleAudioDuration: [2376, 1776],
+    sync_data: [[
+        {
+            "e": 640,
+            "s": 0,
+            "te": 4,
+            "ts": 0,
+            "w": "Let's"
+        },
+        {
+            "e": 930,
+            "s": 640,
+            "te": 9,
+            "ts": 6,
+            "w": "make"
+        },
+        {
+            "e": 1060,
+            "s": 930,
+            "te": 11,
+            "ts": 11,
+            "w": "a"
+        },
+        {
+            "e": 1780,
+            "s": 1060,
+            "te": 17,
+            "ts": 13,
+            "w": "salad"
+        },
+        {
+            "e": 2300,
+            "s": 1780,
+            "te": 23,
+            "ts": 19,
+            "w": "bowl!"
+        }
+    ], 
+    [
+        {
+            "e": 790,
+            "s": 0,
+            "te": 5,
+            "ts": 0,
+            "w": "Sounds"
+        },
+        {
+            "e": 1690,
+            "s": 790,
+            "te": 12,
+            "ts": 7,
+            "w": "great!"
+        }
+    ]],
+    touchables: []
+}
 export const DEMO_STORY_DATA = {
     ID: 420,
     storyName: "Let's Make A Salad Bowl!",

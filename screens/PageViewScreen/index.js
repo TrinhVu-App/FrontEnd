@@ -1,7 +1,7 @@
 import { Dimensions, SafeAreaView, View } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
-import { AUDIO_RESOURCE, DEMO_PAGE_DATA_1, IMAGE_RESOURCE } from '../../DEMO_DATA'
+import { AUDIO_RESOURCE, DEMO_PAGE_DATA_1, DEMO_PAGE_DATA_2, IMAGE_RESOURCE } from '../../DEMO_DATA'
 import { SourceSansPro } from '../../config';
 import {
   Canvas,
@@ -19,8 +19,6 @@ import { Audio } from 'expo-av'
 import { useEffect } from 'react';
 import PageTitle from '../../components/PageTitle';
 
-//Static data
-const itemsCord = DEMO_PAGE_DATA_1.touchables;
 
 //check if a touch is in hitbox of an item
 const checkCord = (x, y, touchable) => {
@@ -47,43 +45,46 @@ const itemsHitBoxCheck = (x, y, touchables) => {
 
 //Story page view component
 const PageViewScreen = () => {
+  const currentPage = DEMO_PAGE_DATA_2;
   //set some states
   const [lableText, setLableText] = useState("")
   const [isShowingLable, setIsShowingLable] = useState(false)
   const [sound, setSound] = useState();
 
   //load background image for canvas
-  const image = useImage(IMAGE_RESOURCE[DEMO_PAGE_DATA_1.background]);
+  const image = useImage(IMAGE_RESOURCE[currentPage.background]);
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
 
   //process to display of the title
-  const pageTitle = DEMO_PAGE_DATA_1.title;
-  const sync_data = DEMO_PAGE_DATA_1.sync_data;
-  const titleAudio = DEMO_PAGE_DATA_1.titleAudio;
+  const pageTitle = currentPage.title;
+  const sync_data = currentPage.sync_data;
+  const titleAudio = currentPage.titleAudio;
+  const titleAudioDuration = currentPage.titleAudioDuration;
+  const itemsCord = currentPage.touchables;
 
   const fontSize = 30;
   const font = useFont(SourceSansPro, fontSize);
-  let textWidth = 13;
+  // let textWidth = 13;
   if (font) {
-    textWidth = font.getTextWidth(pageTitle)
+    // textWidth = font.getTextWidth(pageTitle)
     lableWidth = font.getTextWidth(lableText)
   }
 
   // process to play sounds
   async function playSound(audio) {
-    console.log('Loading Sound');
+    // console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(audio);
 
     setSound(sound);
 
-    console.log('Playing Sound');
+    // console.log('Playing Sound');
     await sound.playAsync();
   }
   useEffect(() => {
     return sound
       ? () => {
-        console.log('Unloading Sound');
+        // console.log('Unloading Sound');
         sound.unloadAsync();
       }
       : undefined;
@@ -107,6 +108,7 @@ const PageViewScreen = () => {
         cy.current = y;
         lableBgX.current = x - lableWidth / 2 - 5;
         lableBgY.current = y- fontSize +5;
+        
       }
 
     },
@@ -121,14 +123,14 @@ const PageViewScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <PageTitle pageTitle={pageTitle} lable={lableText} isShowingLable={isShowingLable} syncData={sync_data} titleAudio={titleAudio}/>
+      <PageTitle pageTitle={pageTitle} titleAudioDuration={titleAudioDuration} lable={lableText} isShowingLable={isShowingLable} syncData={sync_data} titleAudio={titleAudio}/>
 
       <Canvas style={styles.canvas} onTouch={touchHander}>
         <Image
           image={image}
           fit="fitHeight"
           x={0}
-          y={40}
+          y={0}
           width={screenWidth}
           height={screenHeight}
         />
