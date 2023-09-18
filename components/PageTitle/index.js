@@ -95,7 +95,7 @@ const PageTitle = (props) => {
         playSound(audios[a]);
         // console.log(a);
       }, audioTimer)
-      audioTimer = audioTimer + audioDurations[a];
+      audioTimer = audioTimer + audioDurations[a]+300;
     }
 
     //start sync title
@@ -129,7 +129,7 @@ const PageTitle = (props) => {
 
 
 
-  }, [])
+  }, [pageTitles])
 
 
   return (
