@@ -4,17 +4,7 @@ import { styles } from './styles'
 import { Directions, Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
 import {
   AUDIO_RESOURCE,
-  DEMO_PAGE_DATA_4,
-  DEMO_PAGE_DATA_1,
-  DEMO_PAGE_DATA_3,
-  DEMO_PAGE_DATA_2,
-  DEMO_PAGE_DATA_5,
   IMAGE_RESOURCE,
-  DEMO_PAGE_DATA_6,
-  DEMO_PAGE_DATA_7,
-  DEMO_PAGE_DATA_8,
-  DEMO_PAGE_DATA_9,
-  DEMO_PAGE_DATA_10,
   DEMO_STORY_DATA
 } from '../../DEMO_DATA'
 import { HEIGHT_SCALE, SourceSansPro, WIDTH_SCALE, screenHeight, screenWidth } from '../../config';
@@ -24,7 +14,6 @@ import {
   Image,
   Text,
   useFont,
-  Paint,
   Rect,
   useTouchHandler,
   useValue,
@@ -33,7 +22,6 @@ import {
 import { Audio } from 'expo-av'
 import { useEffect } from 'react';
 import PageTitle from '../../components/PageTitle';
-import { useCallback } from 'react';
 
 
 
