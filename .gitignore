@@ -4,6 +4,7 @@
 node_modules/
 
 resource/
+config.js
 
 # Expo
 .expo/

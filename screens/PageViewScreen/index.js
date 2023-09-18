@@ -1,8 +1,23 @@
-import { Dimensions, SafeAreaView, View } from 'react-native'
+import { Dimensions, SafeAreaView, ScrollView, View, RefreshControl } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
-import { AUDIO_RESOURCE, DEMO_PAGE_DATA_1, DEMO_PAGE_DATA_2, IMAGE_RESOURCE } from '../../DEMO_DATA'
-import { SourceSansPro } from '../../config';
+import { Directions, Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
+import {
+  AUDIO_RESOURCE,
+  DEMO_PAGE_DATA_4,
+  DEMO_PAGE_DATA_1,
+  DEMO_PAGE_DATA_3,
+  DEMO_PAGE_DATA_2,
+  DEMO_PAGE_DATA_5,
+  IMAGE_RESOURCE,
+  DEMO_PAGE_DATA_6,
+  DEMO_PAGE_DATA_7,
+  DEMO_PAGE_DATA_8,
+  DEMO_PAGE_DATA_9,
+  DEMO_PAGE_DATA_10,
+  DEMO_STORY_DATA
+} from '../../DEMO_DATA'
+import { HEIGHT_SCALE, SourceSansPro, WIDTH_SCALE, screenHeight, screenWidth } from '../../config';
 import {
   Canvas,
   useImage,
@@ -18,50 +33,62 @@ import {
 import { Audio } from 'expo-av'
 import { useEffect } from 'react';
 import PageTitle from '../../components/PageTitle';
+import { useCallback } from 'react';
+
 
 
 //check if a touch is in hitbox of an item
 const checkCord = (x, y, touchable) => {
   let result = [false, '', {}]
-  if (touchable.position.x <= x && x <= (touchable.position.x + touchable.width)) {
-    if (touchable.position.y <= y && y <= (touchable.position.y + touchable.height)) {
-      result = [true, touchable.name, AUDIO_RESOURCE[touchable.audio]]
+  try {
+    if ((touchable.position.x * WIDTH_SCALE) <= x && x <= ((touchable.position.x + touchable.width) * WIDTH_SCALE)) {
+      if ((touchable.position.y * HEIGHT_SCALE) <= y && y <= ((touchable.position.y + touchable.height) * HEIGHT_SCALE)) {
+        result = [true, touchable.name, AUDIO_RESOURCE[touchable.audio]]
+      }
     }
+    return result;
+  } catch (error) {
+    console.log(error);
   }
-  return result;
+
 }
 
 //iterate user's touch through list of items in the page
 const itemsHitBoxCheck = (x, y, touchables) => {
   let result = [false, '', {}]
-  touchables.map((touchable) => {
-    const checkResult = checkCord(x, y, touchable);
-    if (checkResult[0]) {
-      result = checkResult
-    }
-  })
-  return result
+  try {
+    touchables.map((touchable) => {
+      const checkResult = checkCord(x, y, touchable);
+      if (checkResult[0]) {
+        result = checkResult;
+      }
+    })
+    return result
+  } catch (error) {
+    console.log(error);
+  }
+
 }
 
 //Story page view component
 const PageViewScreen = () => {
-  const currentPage = DEMO_PAGE_DATA_2;
+  const [currentPage, setCurrentPage] = useState(DEMO_STORY_DATA.pages[0])
   //set some states
-  const [lableText, setLableText] = useState("")
+  const [lableText, setLableText] = useState(" ")
   const [isShowingLable, setIsShowingLable] = useState(false)
   const [sound, setSound] = useState();
+  // const [refreshing, setRefreshing] = useState(false);
+  const [itemsCord, setItemsCord] = useState(currentPage.touchables);
+  const [imageID, setImageID] = useState(currentPage.background)
 
   //load background image for canvas
-  const image = useImage(IMAGE_RESOURCE[currentPage.background]);
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
+  const bg = useImage(IMAGE_RESOURCE[imageID]);
 
   //process to display of the title
   const pageTitle = currentPage.title;
   const sync_data = currentPage.sync_data;
   const titleAudio = currentPage.titleAudio;
   const titleAudioDuration = currentPage.titleAudioDuration;
-  const itemsCord = currentPage.touchables;
 
   const fontSize = 30;
   const font = useFont(SourceSansPro, fontSize);
@@ -90,25 +117,55 @@ const PageViewScreen = () => {
       : undefined;
   }, [sound]);
 
+  const flingLeft = Gesture.Fling()
+    .direction(Directions.LEFT)
+    .onEnd(() => {
+      console.log("Flinged");
+      if (currentPage.ID < DEMO_STORY_DATA.pages.length - 1) {
+        setCurrentPage((currentPage) => {
+          const newPage = DEMO_STORY_DATA.pages[currentPage.ID + 1]
+          setItemsCord(newPage.touchables);
+          setImageID(newPage.background);
+
+          return DEMO_STORY_DATA.pages[currentPage.ID + 1]
+        })
+      }
+    })
+
+  const flingRight = Gesture.Fling()
+    .direction(Directions.RIGHT)
+    .onEnd(() => {
+      if (currentPage.ID > 0) {
+        setCurrentPage((currentPage) => {
+          const newPage = DEMO_STORY_DATA.pages[currentPage.ID - 1]
+          setItemsCord(newPage.touchables);
+          setImageID(newPage.background);
+
+          return DEMO_STORY_DATA.pages[currentPage.ID - 1]
+        })
+      }
+    })
   //process to handle user's touch, display lable of touchables
   const cx = useValue(10);
   const cy = useValue(10);
   let timeoutID;
-  const  lableBgX = useValue(10);
-  const  lableBgY = useValue(10);
+  const lableBgX = useValue(10);
+  const lableBgY = useValue(10);
   const touchHander = useTouchHandler({
     onStart: ({ x, y }) => {
+      console.log(currentPage.ID);
       const pointerCheck = itemsHitBoxCheck(x, y, itemsCord)
       if (pointerCheck[0]) {
-        clearTimeout(timeoutID) 
+
+        clearTimeout(timeoutID)
         setLableText(pointerCheck[1])
         setIsShowingLable(true)
         playSound(pointerCheck[2])
         cx.current = x - lableWidth / 2;
         cy.current = y;
         lableBgX.current = x - lableWidth / 2 - 5;
-        lableBgY.current = y- fontSize +5;
-        
+        lableBgY.current = y - fontSize + 5;
+
       }
 
     },
@@ -117,32 +174,39 @@ const PageViewScreen = () => {
         setIsShowingLable(false)
       }, 2000)
     }
-  });
-  
+  }, [itemsCord]);
 
+
+
+  const composed = Gesture.Simultaneous(flingLeft, flingRight)
 
   return (
-    <SafeAreaView style={styles.container}>
-      <PageTitle pageTitle={pageTitle} titleAudioDuration={titleAudioDuration} lable={lableText} isShowingLable={isShowingLable} syncData={sync_data} titleAudio={titleAudio}/>
+    <GestureHandlerRootView >
+      <GestureDetector gesture={composed}>
+        <View style={styles.container}>
+          <PageTitle pageTitle={pageTitle} titleAudioDuration={titleAudioDuration} lable={lableText} isShowingLable={isShowingLable} syncData={sync_data} titleAudio={titleAudio} />
 
-      <Canvas style={styles.canvas} onTouch={touchHander}>
-        <Image
-          image={image}
-          fit="fitHeight"
-          x={0}
-          y={0}
-          width={screenWidth}
-          height={screenHeight}
-        />
-        {isShowingLable && (
-          <Group>
-          <Rect x={lableBgX} y={lableBgY} color="gray" width={lableWidth + 10} height={fontSize + 5} />
-          <Text text={lableText} x={cx} y={cy} font={font} color="white" />
-          </Group>
-        )}
-      </Canvas>
-    </SafeAreaView>
+          <Canvas style={styles.canvas} onTouch={touchHander}>
+            <Image
+              image={bg}
+              fit="fitHeight"
+              x={0}
+              y={0}
+              width={screenWidth}
+              height={screenHeight}
+            />
+            {isShowingLable && (
+              <Group>
+                <Rect x={lableBgX} y={lableBgY} color="gray" width={lableWidth + 10} height={fontSize + 5} />
+                <Text text={lableText} x={cx} y={cy} font={font} color="white" />
+              </Group>
+            )}
+          </Canvas>
+        </View>
 
+
+      </GestureDetector>
+    </GestureHandlerRootView>
   )
 }
 
