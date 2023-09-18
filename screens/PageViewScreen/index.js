@@ -1,4 +1,4 @@
-import { Dimensions, SafeAreaView, ScrollView, View, RefreshControl } from 'react-native'
+import { View } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
 import { Directions, Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
