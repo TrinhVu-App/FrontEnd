@@ -1259,7 +1259,7 @@ export const DEMO_PAGE_DATA_10 = {
     ]
 }
 export const DEMO_STORY_DATA = {
-    ID: 420,
+    id: 420,
     storyName: "Let's Make A Salad Bowl!",
     level: "A",
     author: "Hilary Tran",
