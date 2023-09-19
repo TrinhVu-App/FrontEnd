@@ -18,12 +18,13 @@ const Navigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name='pageView' component={PageViewScreen} options={{headerShown: false, orientation: 'landscape'}}/>
+         
           {userInfo.data ? (
             <>
               <Stack.Screen name="storyHome" component={StoryHome} options={{headerShown: false, orientation: 'landscape'}}/>
               <Stack.Screen name="storyDetail" component={StoryDetail} options={{headerShown: false, orientation: 'landscape'}}/>
               <Stack.Screen name="library" component={StoryList} options={{headerShown: false, orientation: 'landscape'}}/>
+              <Stack.Screen name='pageView' component={PageViewScreen} options={{headerShown: false, orientation: 'landscape'}}/>
             </>
           ) : (
             <>
