@@ -37,6 +37,7 @@ const RegisterScreen = ({navigation}) => {
                 style={styles.textInput}
                 placeholder='Password...'
                 value={password}
+                secureTextEntry={true}
                 onChangeText={(text) => setPassword(text)}
             />
 
@@ -44,6 +45,7 @@ const RegisterScreen = ({navigation}) => {
                 style={styles.textInput}
                 placeholder='Confirm password...'
                 value={password_confirmation}
+                secureTextEntry={true}
                 onChangeText={(text) => setPassword_confirmation(text)}
             />
 

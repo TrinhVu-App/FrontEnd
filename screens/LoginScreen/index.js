@@ -5,12 +5,16 @@ import { useState } from 'react'
 import { ContextAPI } from '../../context/ContextAPI'
 import Spinner from 'react-native-loading-spinner-overlay'
 
+
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const {isLoading, login} = useContext(ContextAPI);
+
   // const [btn, onBtnPressed] = useState('')
   return (
+
+
     <SafeAreaView style={styles.container}>
       <Spinner visible={isLoading} /> 
       <Image
@@ -30,6 +34,7 @@ const LoginScreen = ({ navigation }) => {
         style={styles.textInput}
         placeholder='Password...'
         value={password}
+        secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
       />
 
@@ -46,6 +51,7 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
     </SafeAreaView>
+
   )
 }
 
