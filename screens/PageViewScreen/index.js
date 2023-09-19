@@ -22,6 +22,7 @@ import {
 import { Audio } from 'expo-av'
 import { useEffect } from 'react';
 import PageTitle from '../../components/PageTitle';
+import BackButton from '../../components/BackButton'
 
 
 
@@ -59,7 +60,8 @@ const itemsHitBoxCheck = (x, y, touchables) => {
 }
 
 //Story page view component
-const PageViewScreen = () => {
+const PageViewScreen = (props) => {
+  const navigation = props.navigation;
   const [currentPage, setCurrentPage] = useState(DEMO_STORY_DATA.pages[0])
   //set some states
   const [lableText, setLableText] = useState(" ")
@@ -173,7 +175,9 @@ const PageViewScreen = () => {
       <GestureDetector gesture={composed}>
         <View style={styles.container}>
           <PageTitle pageTitle={pageTitle} titleAudioDuration={titleAudioDuration} lable={lableText} isShowingLable={isShowingLable} syncData={sync_data} titleAudio={titleAudio} />
-
+          <View style={styles.backButton}>
+            <BackButton navigation={navigation}/>
+          </View>         
           <Canvas style={styles.canvas} onTouch={touchHander}>
             <Image
               image={bg}
