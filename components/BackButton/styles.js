@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     image: {
         width: 40,
