@@ -69,13 +69,14 @@ const styles = StyleSheet.create({
     titleContainer: {
         flex: 4,
         // borderColor: 'red',
-        // borderWidth: 1
+        // borderWidth: 1,
+        marginRight: 80
     },
     title: { 
         color: '#1F689E',
         fontSize: 50,
         fontWeight: 'bold',
-        paddingTop: 30
+
     },
     attributeContainer: {
         flex: 2,

@@ -11,11 +11,14 @@ import { useContext } from 'react'
 import { ContextAPI } from '../../context/ContextAPI'
 import Spinner from 'react-native-loading-spinner-overlay'
 import ReadButton from '../../components/ReadButton'
+import { DEMO_STORY_DATA } from '../../DEMO_DATA'
 
 const StoryDetail = ({navigation}) => {
   const [storyData, setStoryData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const { storyOfInterest } = useContext(ContextAPI);
+  const [img , setImg] = useState()
+
   const getStory = () => {
     setIsLoading(true);
 
@@ -23,7 +26,12 @@ const StoryDetail = ({navigation}) => {
       .get(`${BASE_URL}/story/${storyOfInterest}`)
       .then(res => {
         let data = res.data;
-        setStoryData(data);
+        setStoryData(()=> {
+            const temp = data;
+            setImg({uri: `${BASE_URL}/story/image/${data.thumbnail}`})
+          return data
+        });
+        
         setIsLoading(false);
       })
       .catch(e => {
@@ -33,8 +41,20 @@ const StoryDetail = ({navigation}) => {
   }
 
   useEffect(() => {
-    getStory()
+    if(storyOfInterest == 420) {
+      setStoryData(DEMO_STORY_DATA);
+      setImg(require('../../resource/images/Demo_Thumbnail.png'))
+    } else {
+      getStory();
+     
+    }
   }, [])
+
+  // useEffect(()=> {
+  //   console.log("tf: " +img);
+  // }, [img])
+
+  let image = img; 
 
   const setBookmarkPath = (storyData) => {
     switch(storyData.level) {
@@ -50,7 +70,7 @@ const StoryDetail = ({navigation}) => {
       <Spinner visible={isLoading} />
       <View style={styles.storyThumbContainer}>
         <Image 
-          source={{uri: `${BASE_URL}/story/image/${storyData.thumbnail}`}}
+          source={image}
           style={styles.storyThumb}
         />
         <Image 
@@ -83,7 +103,7 @@ const StoryDetail = ({navigation}) => {
 
 
       <View style={styles.backButton}>
-           <BackButton />
+           <BackButton navigation={navigation}/>
       </View>
       <View style={styles.hearthButton}>
         <HeartButton />
