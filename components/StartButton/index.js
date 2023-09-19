@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faCircle } from '@fortawesome/free-regular-svg-icons'
 
-const StartButton = () => {
-    
+const StartButton = (props) => {
+    const navigation = props.navigation
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={()=> {navigation.navigate("pageView")}}>
                 <FontAwesomeIcon icon={faCircle} style={{ color: "#ffffff", position: 'absolute' }} size={135} />
                 <FontAwesomeIcon icon={faPlay} color='#fff' size={60}/>
             </TouchableOpacity>
