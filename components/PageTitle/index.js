@@ -83,10 +83,6 @@ const PageTitle = (props) => {
   })
 
   useEffect(() => {
-    // const tf = <Text> TF </Text>
-    // setSyncTitle(tf)
-    // console.log(syncTitle+ "==============================");
-    //set timer for setTimeOut
     let timer = 0;
     let audioTimer = 0;
 
@@ -134,9 +130,7 @@ const PageTitle = (props) => {
 
   return (
     <View style={styles.pageTitle}>
-      {/* {isSyncText ? (syncTitle) : (title)} */}
       {syncTitle}
-      {/* <Text style={styles.titleWord}>Some title here</Text> */}
     </View>
   )
 }
