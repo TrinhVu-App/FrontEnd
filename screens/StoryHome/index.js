@@ -10,30 +10,31 @@ import { ContextAPI } from '../../context/ContextAPI'
 import axios, { Axios } from 'axios'
 import { BASE_URL } from '../../config'
 import { useEffect } from 'react'
+import { DEMO_STORY_DATA } from '../../DEMO_DATA'
 
 const StoryHome = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [frontPageStory, setFrontPageStory] = useState({});
+  const [frontPageStory, setFrontPageStory] = useState(DEMO_STORY_DATA);
   
-  const getFrontPageStory = () => {
-    setIsLoading(true);
+  // const getFrontPageStory = () => {
+  //   setIsLoading(true);
 
-    axios
-      .get(`${BASE_URL}/story/1`)
-      .then(res => {
-        let data = res.data;
-        setFrontPageStory(data);
-        setIsLoading(false);
-      })
-      .catch(e => {
-        console.log(e);
-        setIsLoading(false);
-      })
-  }
+  //   axios
+  //     .get(`${BASE_URL}/story/1`)
+  //     .then(res => {
+  //       let data = res.data;
+  //       setFrontPageStory(data);
+  //       setIsLoading(false);
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //       setIsLoading(false);
+  //     })
+  // }
 
-  useEffect(() => {
-    getFrontPageStory()
-  }, [])
+  // useEffect(() => {
+  //   getFrontPageStory()
+  // }, [])
 
   return (
     <SafeAreaView style={styles.container}>
