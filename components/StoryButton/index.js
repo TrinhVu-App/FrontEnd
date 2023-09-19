@@ -12,11 +12,18 @@ import { BASE_URL } from '../../config';
 const StoryButton = ({navigation, storyData}) => {
     const { storyDetailContext } = useContext(ContextAPI);
 
-    let storyID = 1; 
+    let storyID = 420; 
     if (storyData) {
         storyID = storyData["id"];
     }
     const thumbnailID = storyData['thumbnail'];
+
+    let thumbnail ;
+    if (storyID == 420) {
+        thumbnail = require('../../resource/images/Demo_Thumbnail.png');
+    } else {
+        thumbnail = {uri: `${BASE_URL}/story/image/${thumbnailID}`}
+    }
 
     const setBookmarkPath = (storyData) => {
         switch(storyData.level) {
@@ -32,7 +39,7 @@ const StoryButton = ({navigation, storyData}) => {
            
             <View style={styles.imageFrame}>
                 <Image
-                    source={{uri: `${BASE_URL}/story/image/${thumbnailID}`}}
+                    source={thumbnail}
                     style={styles.img}
                 />
             </View>
