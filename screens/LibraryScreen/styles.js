@@ -46,6 +46,11 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems:'center'
     },
+    menuContainer: {
+      position: 'absolute',
+      top: "15%",
+      right: 20
+    },
     LevelFilter: {
       // borderColor: 'green',
       // borderWidth: 2,

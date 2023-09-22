@@ -6,11 +6,12 @@ import HambergerMenu from '../../components/HamburgerMenu';
 import SearchButton from '../../components/SearchButton';
 import BackButton from '../../components/BackButton';
 import LevelFilter2 from '../../components/LevelFilter2';
-import { BASE_URL } from '../../config';
+import { BASE_URL, screenWidth } from '../../config';
 import { useContext } from 'react';
 import { ContextAPI } from '../../context/ContextAPI';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
+import MenuDropDown from '../../components/MenuDropdown';
 
 const blue = '#07B8EE';
 const purple = '#A69BD0';
@@ -18,7 +19,8 @@ const purple = '#A69BD0';
 
 export default function Library({ navigation }) {
   const [storyData, setStoryData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShowingMenu, setIsShowingMenu] = useState(false)
 
   const getStories = () => {
     setIsLoading(true);
@@ -43,12 +45,13 @@ export default function Library({ navigation }) {
     return <StoryButton storyData={item} navigation={navigation} />
   }
 
+  const col = Math.floor(screenWidth/165)
 
 
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={isLoading} />
-    <View style={styles.banner}>
+      <View style={styles.banner}>
         <View style={styles.BackButton}>
           <BackButton navigation={navigation} />
         </View>
@@ -57,8 +60,13 @@ export default function Library({ navigation }) {
         <View style={styles.SearchButton}>
           <SearchButton />
         </View>
+
         <View style={styles.HamburgerMenu}>
-          <HambergerMenu />
+          <HambergerMenu
+            setIsShowingMenu={setIsShowingMenu}
+            isShowingMenu={isShowingMenu}
+            navigation={navigation}
+          />
         </View>
       </View>
 
@@ -66,7 +74,7 @@ export default function Library({ navigation }) {
         <FlatList
           data={storyData}
           keyExtractor={item => item.id}
-          numColumns={5}
+          numColumns={col}
           styles={styles.storyList}
           renderItem={
             renderItem
@@ -76,6 +84,12 @@ export default function Library({ navigation }) {
       <View style={styles.LevelFilter}>
         <LevelFilter2 />
       </View>
+
+      {isShowingMenu && (
+        <View style={styles.menuContainer}>
+          <MenuDropDown navigation={navigation} setIsShowingMenu={setIsShowingMenu}/>
+        </View>
+      )}
     </SafeAreaView>
 
   )
