@@ -12,7 +12,6 @@ const wordDurations = (syncData) => {
 }
 
 const titleHighlight = (lable, renderTitle) => {
-
   const hightlightTitle = renderTitle.map((word, index) => {
     if (word.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase() == lable.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase()) {
 
@@ -26,10 +25,30 @@ const titleHighlight = (lable, renderTitle) => {
   return result;
 }
 
+const checkHighlight = (lable, pageTitle) => {
+  let result = <Text style={styles.titleWord}>{pageTitle}</Text>
+
+  const highlightStartPos = pageTitle.toUpperCase().indexOf(lable.toUpperCase());
+
+  if (highlightStartPos !== -1) {
+    const highlightEndPos = highlightStartPos + lable.length;
+    const titleHead = pageTitle.substring(0, highlightStartPos);
+    const titleTail = pageTitle.substring(highlightEndPos, pageTitle.length);
+    const titleHighlight = pageTitle.substring(highlightStartPos, highlightEndPos)
+
+    const highlight = <Text style={styles.titleWordHightlight}>{titleHighlight}</Text>
+    result = <Text style={styles.titleWord}>{titleHead}{highlight}{titleTail}</Text>
+  }
+
+
+
+  return result;
+}
+
+
 const PageTitle = (props) => {
   //declear some states
   const [sound, setSound] = useState();
-  const [isSyncText, setIsSyncText] = useState();
   const [syncTitle, setSyncTitle] = useState()
 
   //getting title data from props
@@ -39,27 +58,12 @@ const PageTitle = (props) => {
   const syncDatas = props.syncData;
   const titleAudios = props.titleAudio;
   const audioDurations = props.titleAudioDuration;
+  // function changeIsSyncText() = props.changeIsSyncText;
 
   //split title Strings into arrays 
-  const titleArrays = pageTitles.map((titleSentence) => {
+  let titleArrays = pageTitles.map((titleSentence) => {
     return titleSentence.split(" ");
   })
-
-  const titleArraysFix = titleArrays.map((titleSentenceFix) => {
-    return titleSentenceFix.map((word) => {
-      return (word + " ")
-    })
-  })
-
-  let title = titleArraysFix.map((titleArrayFix, index) => {
-    return <Text key={index} style={styles.titleWord}>{titleArrayFix}</Text>
-  })
-
-  if (isShowingLable) {
-    title = titleArrays.map((titleArray) => {
-      return titleHighlight(lable, titleArray)
-    })
-  }
 
   const audios = titleAudios.map((titleAudio) => {
     return AUDIO_RESOURCE[titleAudio]
@@ -82,31 +86,40 @@ const PageTitle = (props) => {
     return wordDurations(syncData);
   })
 
+
+
   useEffect(() => {
     let timer = 0;
     let audioTimer = 0;
+
+    titleArrays = pageTitles.map((titleSentence) => {
+      return titleSentence.split(" ");
+    })
 
     for (let a = 0; a < audios.length; a++) {
       setTimeout(() => {
         playSound(audios[a]);
         // console.log(a);
       }, audioTimer)
-      audioTimer = audioTimer + audioDurations[a]+300;
+      audioTimer = audioTimer + audioDurations[a] + 300;
     }
 
     //start sync title
     for (let j = 0; j < titleSyncDatas.length; j++) {
       //sync title while audio is playing
       for (let i = 0; i <= titleSyncDatas[j].length; i++) {
-        setIsSyncText(true)
+        // setIsSyncText(true)
+        props.changeIsSyncText(true)
         // console.log(titleSyncDatas[j])
         setTimeout(() => {
           if (i < titleSyncDatas[j].length) {
             setSyncTitle(titleHighlight(titleSyncDatas[j][i][0], titleArrays[j]))
+            // setSyncTitle(checkHighlight(titleSyncDatas[j][i][0], pageTitles[j]))
           }
-          else if (j == titleSyncDatas.length-1) {
-            setSyncTitle(title[j])
-            // console.log("----" + title[j]);
+          else if (j == titleSyncDatas.length - 1) {
+            setSyncTitle(title[j]);
+            // setIsSyncText(false);
+            props.changeIsSyncText(false)
           }
           else {
             setSyncTitle([])
@@ -126,6 +139,21 @@ const PageTitle = (props) => {
 
 
   }, [pageTitles])
+
+  useEffect(() => {
+    if (isShowingLable) {
+      title = pageTitles.map((pageTitle) => {
+        return checkHighlight(lable, pageTitle);
+      })
+      setSyncTitle(title[title.length - 1])
+    } else {
+      title = pageTitles.map((pageTitle) => {
+        return checkHighlight('', pageTitle);
+      })
+      setSyncTitle(title[title.length - 1])
+    }
+
+  }, [isShowingLable, pageTitles])
 
 
   return (
