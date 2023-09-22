@@ -8,10 +8,10 @@ const LevelFilter2 = () => {
 
     const data = [
         {key: '0', value: 'All levels'},
-        {key: '1', value: 'Level 1'},
-        {key: '2', value: 'Level 2'},
-        {key: '3', value: 'Level 3'},
-        {key: '4', value: 'Level 4'}
+        {key: '1', value: 'Level A'},
+        {key: '2', value: 'Level B'},
+        {key: '3', value: 'Level C'},
+        {key: '4', value: 'Level D'}
     ]
 
   return (
