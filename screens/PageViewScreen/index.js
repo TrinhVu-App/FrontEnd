@@ -23,6 +23,7 @@ import { Audio } from 'expo-av'
 import { useEffect } from 'react';
 import PageTitle from '../../components/PageTitle';
 import BackButton from '../../components/BackButton'
+import PageTitle2 from '../../components/PageTitle2'
 
 
 
@@ -63,11 +64,10 @@ const itemsHitBoxCheck = (x, y, touchables) => {
 const PageViewScreen = (props) => {
   const navigation = props.navigation;
   const [currentPage, setCurrentPage] = useState(DEMO_STORY_DATA.pages[0])
-  //set some states
-  const [lableText, setLableText] = useState(" ")
+  const [lableText, setLableText] = useState("")
   const [isShowingLable, setIsShowingLable] = useState(false)
   const [sound, setSound] = useState();
-  // const [refreshing, setRefreshing] = useState(false);
+  const [isSyncText, setIsSyncText] = useState(false);
   const [itemsCord, setItemsCord] = useState(currentPage.touchables);
   const [imageID, setImageID] = useState(currentPage.background)
 
@@ -110,30 +110,34 @@ const PageViewScreen = (props) => {
   const flingLeft = Gesture.Fling()
     .direction(Directions.LEFT)
     .onEnd(() => {
-      console.log("Flinged");
-      if (currentPage.ID < DEMO_STORY_DATA.pages.length - 1) {
-        setCurrentPage((currentPage) => {
-          const newPage = DEMO_STORY_DATA.pages[currentPage.ID + 1]
-          setItemsCord(newPage.touchables);
-          setImageID(newPage.background);
+      if (!isSyncText) {
+        if (currentPage.ID < DEMO_STORY_DATA.pages.length - 1) {
+          setCurrentPage((currentPage) => {
+            const newPage = DEMO_STORY_DATA.pages[currentPage.ID + 1]
+            setItemsCord(newPage.touchables);
+            setImageID(newPage.background);
 
-          return DEMO_STORY_DATA.pages[currentPage.ID + 1]
-        })
+            return DEMO_STORY_DATA.pages[currentPage.ID + 1]
+          })
+        }
       }
     })
 
   const flingRight = Gesture.Fling()
     .direction(Directions.RIGHT)
     .onEnd(() => {
-      if (currentPage.ID > 0) {
-        setCurrentPage((currentPage) => {
-          const newPage = DEMO_STORY_DATA.pages[currentPage.ID - 1]
-          setItemsCord(newPage.touchables);
-          setImageID(newPage.background);
+      if (!isSyncText) {
+        if (currentPage.ID > 0) {
+          setCurrentPage((currentPage) => {
+            const newPage = DEMO_STORY_DATA.pages[currentPage.ID - 1]
+            setItemsCord(newPage.touchables);
+            setImageID(newPage.background);
 
-          return DEMO_STORY_DATA.pages[currentPage.ID - 1]
-        })
+            return DEMO_STORY_DATA.pages[currentPage.ID - 1]
+          })
+        }
       }
+
     })
   //process to handle user's touch, display lable of touchables
   const cx = useValue(10);
@@ -143,30 +147,33 @@ const PageViewScreen = (props) => {
   const lableBgY = useValue(10);
   const touchHander = useTouchHandler({
     onStart: ({ x, y }) => {
-      console.log(currentPage.ID);
-      const pointerCheck = itemsHitBoxCheck(x, y, itemsCord)
-      if (pointerCheck[0]) {
-
-        clearTimeout(timeoutID)
-        setLableText(pointerCheck[1])
-        setIsShowingLable(true)
-        playSound(pointerCheck[2])
-        cx.current = x - lableWidth / 2;
-        cy.current = y;
-        lableBgX.current = x - lableWidth / 2 - 5;
-        lableBgY.current = y - fontSize + 5;
-
+      if (!isSyncText) {
+        const pointerCheck = itemsHitBoxCheck(x, y, itemsCord)
+        if (pointerCheck[0]) {
+          clearTimeout(timeoutID)
+          setLableText(pointerCheck[1])
+          setIsShowingLable(true)
+          playSound(pointerCheck[2])
+          cx.current = x - lableWidth / 2;
+          cy.current = y;
+          lableBgX.current = x - lableWidth / 2 - 5;
+          lableBgY.current = y - fontSize + 5;
+        }
       }
-
     },
     onEnd: () => {
-      timeoutID = setTimeout(() => {
-        setIsShowingLable(false)
-      }, 2000)
+      if (!isSyncText) {
+        timeoutID = setTimeout(() => {
+          setIsShowingLable(false)
+        }, 2000)
+      }
+
     }
-  }, [itemsCord]);
+  }, [itemsCord, isSyncText]);
 
-
+  const changeIsSyncText = (isSyncText) => {
+    setIsSyncText(isSyncText)
+  }
 
   const composed = Gesture.Simultaneous(flingLeft, flingRight)
 
@@ -174,10 +181,17 @@ const PageViewScreen = (props) => {
     <GestureHandlerRootView >
       <GestureDetector gesture={composed}>
         <View style={styles.container}>
-          <PageTitle pageTitle={pageTitle} titleAudioDuration={titleAudioDuration} lable={lableText} isShowingLable={isShowingLable} syncData={sync_data} titleAudio={titleAudio} />
+          <PageTitle
+            pageTitle={pageTitle}
+            titleAudioDuration={titleAudioDuration}
+            lable={lableText}
+            isShowingLable={isShowingLable}
+            syncData={sync_data}
+            titleAudio={titleAudio}
+            changeIsSyncText={changeIsSyncText} />
           <View style={styles.backButton}>
-            <BackButton navigation={navigation}/>
-          </View>         
+            <BackButton navigation={navigation} />
+          </View>
           <Canvas style={styles.canvas} onTouch={touchHander}>
             <Image
               image={bg}
