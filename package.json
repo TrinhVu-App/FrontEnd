@@ -27,6 +27,7 @@
     "expo-linking": "^5.0.2",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
+    "react-hook-form": "^7.46.2",
     "react-native": "0.72.4",
     "react-native-canvas": "^0.1.39",
     "react-native-dropdown-select-list": "^2.0.4",
