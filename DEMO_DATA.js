@@ -1264,6 +1264,7 @@ export const DEMO_STORY_DATA = {
     level: "A",
     author: "Hilary Tran",
     illustrator: "Nathan Pham",
+    type: 0,
     pages:
         [
             DEMO_PAGE_DATA_1,
