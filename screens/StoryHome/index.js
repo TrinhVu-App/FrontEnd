@@ -11,10 +11,11 @@ import axios, { Axios } from 'axios'
 import { BASE_URL } from '../../config'
 import { useEffect } from 'react'
 import { DEMO_STORY_DATA } from '../../DEMO_DATA'
+import { DEMO_ICON_STORY } from '../../DEMO_ICON_STORY_DATA'
 
 const StoryHome = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [frontPageStory, setFrontPageStory] = useState(DEMO_STORY_DATA);
+ const frontPageStory = DEMO_ICON_STORY;
   
   // const getFrontPageStory = () => {
   //   setIsLoading(true);
