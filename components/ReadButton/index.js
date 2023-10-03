@@ -12,7 +12,7 @@ const ReadButton = (props) => {
   const navigation = props.navigation;
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style = {styles.button} onPress={() => {storyDetailContext(420); navigation.navigate('storyDetail')}}> 
+      <TouchableOpacity style = {styles.button} onPress={() => {storyDetailContext(props.storyData["id"]); navigation.navigate('storyDetail')}}> 
         <FontAwesomeIcon icon={faCircle} style={{color: "white", position: 'absolute'}} size={150} />
         <FontAwesomeIcon icon={faPlay} color='#fff' size={60}/>
       </TouchableOpacity>

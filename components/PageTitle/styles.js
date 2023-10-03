@@ -14,6 +14,6 @@ export const styles = StyleSheet.create({
     },
     titleWordHightlight: {
         color: "red",
-        fontSize: 25
+        fontSize: 25,
     }
 })

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { styles } from './styles';
 import { Audio } from 'expo-av';
 import { AUDIO_RESOURCE, DEMO_PAGE_DATA_2 } from '../../DEMO_DATA';
+import { ICON_STORY_AUDIO_RESOURCE } from '../../DEMO_ICON_STORY_DATA';
 
 const wordDurations = (syncData) => {
   const result = syncData.map((wordData) => {
@@ -58,7 +59,16 @@ const PageTitle = (props) => {
   const syncDatas = props.syncData;
   const titleAudios = props.titleAudio;
   const audioDurations = props.titleAudioDuration;
+  const type = props.type;
   // function changeIsSyncText() = props.changeIsSyncText;
+
+  let audioSource ;
+  if(type == 0) {
+    audioSource = AUDIO_RESOURCE
+  }
+  if(type == 1) {
+    audioSource = ICON_STORY_AUDIO_RESOURCE
+  }
 
   //split title Strings into arrays 
   let titleArrays = pageTitles.map((titleSentence) => {
@@ -66,7 +76,7 @@ const PageTitle = (props) => {
   })
 
   const audios = titleAudios.map((titleAudio) => {
-    return AUDIO_RESOURCE[titleAudio]
+    return audioSource[titleAudio]
   })
   async function playSound(audio) {
     const { sound } = await Audio.Sound.createAsync(audio);
@@ -153,7 +163,7 @@ const PageTitle = (props) => {
       setSyncTitle(title[title.length - 1])
     }
 
-  }, [isShowingLable, pageTitles])
+  }, [isShowingLable,lable, pageTitles])
 
 
   return (
