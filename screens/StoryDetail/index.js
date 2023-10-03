@@ -12,6 +12,7 @@ import { ContextAPI } from '../../context/ContextAPI'
 import Spinner from 'react-native-loading-spinner-overlay'
 import ReadButton from '../../components/ReadButton'
 import { DEMO_STORY_DATA } from '../../DEMO_DATA'
+import { DEMO_ICON_STORY } from '../../DEMO_ICON_STORY_DATA'
 
 const StoryDetail = ({navigation}) => {
   const [storyData, setStoryData] = useState({});
@@ -19,6 +20,7 @@ const StoryDetail = ({navigation}) => {
   const { storyOfInterest } = useContext(ContextAPI);
   const [img , setImg] = useState()
 
+  console.log(storyOfInterest);
   const getStory = () => {
     setIsLoading(true);
 
@@ -40,11 +42,17 @@ const StoryDetail = ({navigation}) => {
       })
   }
 
+
   useEffect(() => {
     if(storyOfInterest == 420) {
       setStoryData(DEMO_STORY_DATA);
       setImg(require('../../resource/images/Demo_Thumbnail.png'))
-    } else {
+    } 
+    if(storyOfInterest == 421) {
+      setStoryData(DEMO_ICON_STORY);
+      setImg(require('../../resource/images/Demo_Thumbnail_IconStory.png'))
+    }
+    else {
       getStory();
      
     }
@@ -93,7 +101,7 @@ const StoryDetail = ({navigation}) => {
             </View>
         </View>
         <View style={styles.buttonContainer}>
-              <StartButton navigation={navigation}/>           
+              <StartButton navigation={navigation} storyData={storyData}/>           
         </View>
         <View>
 
