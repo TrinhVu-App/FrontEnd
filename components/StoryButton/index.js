@@ -10,9 +10,9 @@ import { BASE_URL } from '../../config';
 
 //'../../assets/MonkeyIcon.jpeg'
 const StoryButton = ({navigation, storyData}) => {
-    const { storyDetailContext } = useContext(ContextAPI);
+    const { storyDetailContext, storyOfInterest } = useContext(ContextAPI);
 
-    let storyID = 420; 
+    let storyID = storyOfInterest; 
     if (storyData) {
         storyID = storyData["id"];
     }
@@ -21,7 +21,11 @@ const StoryButton = ({navigation, storyData}) => {
     let thumbnail ;
     if (storyID == 420) {
         thumbnail = require('../../resource/images/Demo_Thumbnail.png');
-    } else {
+    }
+    if (storyID == 421) {
+        thumbnail = require('../../resource/images/Demo_Thumbnail_IconStory.png');
+    }
+     else {
         thumbnail = {uri: `${BASE_URL}/story/image/${thumbnailID}`}
     }
 
@@ -34,8 +38,11 @@ const StoryButton = ({navigation, storyData}) => {
     
       const bookmark = setBookmarkPath(storyData);
 
+    console.log(storyOfInterest);
+
+
     return (
-        <TouchableOpacity style={styles.container} onPress={()=> {storyDetailContext(storyData['id']); navigation.navigate('storyDetail')}}>
+        <TouchableOpacity style={styles.container} onPress={()=> {storyDetailContext(storyID); navigation.navigate('storyDetail')}}>
            
             <View style={styles.imageFrame}>
                 <Image
