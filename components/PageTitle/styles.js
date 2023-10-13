@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         justifyContent:'space-between',
         alignItems:'center',
+        flexDirection: 'row',
         top: "10%",
         zIndex: 1,
     },
