@@ -13,95 +13,105 @@ import Spinner from 'react-native-loading-spinner-overlay'
 import ReadButton from '../../components/ReadButton'
 import { DEMO_STORY_DATA } from '../../DEMO_DATA'
 import { DEMO_ICON_STORY } from '../../DEMO_ICON_STORY_DATA'
+import LockedButton from '../../components/LockedButton'
 
-const StoryDetail = ({navigation}) => {
+const StoryDetail = ({ navigation, route }) => {
   const [storyData, setStoryData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { storyOfInterest } = useContext(ContextAPI);
-  const [img , setImg] = useState()
+  const storyID = route.params.storyID
+  const [img, setImg] = useState()
+  const [unlocked, setUnlocked] = useState(false)
 
-  console.log(storyOfInterest);
-  const getStory = () => {
-    setIsLoading(true);
+  const getStory = (storyID) => {
+    if (storyID == 420) {
+      setStoryData(DEMO_STORY_DATA);
+      setUnlocked(true)
+      setImg(require('../../resource/images/Demo_Thumbnail.png'))
+    } else 
+    if (storyID == 421) {
+      setStoryData(DEMO_ICON_STORY);
+      setUnlocked(true)
+      setImg(require('../../resource/images/Demo_Thumbnail_IconStory.png'))
+    } else {
+      setIsLoading(true);
 
-    axios
-      .get(`${BASE_URL}/story/${storyOfInterest}`)
-      .then(res => {
-        let data = res.data;
-        setStoryData(()=> {
+      axios
+        .get(`${BASE_URL}/story/${storyID}`)
+        .then(res => {
+          let data = res.data;
+          setStoryData(() => {
             const temp = data;
-            setImg({uri: `${BASE_URL}/story/image/${data.thumbnail}`})
-          return data
-        });
-        
-        setIsLoading(false);
-      })
-      .catch(e => {
-        console.log(e);
-        setIsLoading(false);
-      })
+            setImg({ uri: `${BASE_URL}/story/image/${data.thumbnail}` })
+            return data
+          });
+
+          setIsLoading(false);
+        })
+        .catch(e => {
+          console.log(e);
+          setIsLoading(false);
+        })
+    }
+
   }
 
 
   useEffect(() => {
-    if(storyOfInterest == 420) {
-      setStoryData(DEMO_STORY_DATA);
-      setImg(require('../../resource/images/Demo_Thumbnail.png'))
-    } 
-    if(storyOfInterest == 421) {
-      setStoryData(DEMO_ICON_STORY);
-      setImg(require('../../resource/images/Demo_Thumbnail_IconStory.png'))
-    }
-    else {
-      getStory();
-     
-    }
+
+    getStory(storyID);
+
+
   }, [])
 
   // useEffect(()=> {
   //   console.log("tf: " +img);
   // }, [img])
 
-  let image = img; 
+  let image = img;
 
   const setBookmarkPath = (storyData) => {
-    switch(storyData.level) {
-    case'A': return require("../../assets/bookmark-A.png");
-    case'B': return require("../../assets/bookmark-B.png");
-    case'C': return require("../../assets/bookmark-C.png");
-  }}
+    switch (storyData.level) {
+      case 'A': return require("../../assets/bookmark-A.png");
+      case 'B': return require("../../assets/bookmark-B.png");
+      case 'C': return require("../../assets/bookmark-C.png");
+    }
+  }
 
   const bookmark = setBookmarkPath(storyData)
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={isLoading} />
       <View style={styles.storyThumbContainer}>
-        <Image 
+        <Image
           source={image}
           style={styles.storyThumb}
         />
-        <Image 
+        <Image
           source={bookmark}
           style={styles.bookmark}
         />
-      </View> 
+      </View>
       <View style={styles.storyDetailContainer}>
         <View style={styles.titleContainer}>
-           <Text style={styles.title}>{storyData.storyName}</Text>
+          <Text style={styles.title}>{storyData.storyName}</Text>
         </View>
         <View style={styles.attributeContainer}>
-            <View style={styles.attributePartContainer}>
-              <Text style={styles.attributHeader}>Author</Text>
-              <Text style={styles.attributeText}>{storyData.author}</Text>
-            </View>
-            <View style={styles.attributePartContainer}>
-              <Text style={styles.attributHeader}>Illustrator</Text>
-              <Text style={styles.attributeText}>{storyData.illustrator}</Text>
-            </View>
+          <View style={styles.attributePartContainer}>
+            <Text style={styles.attributHeader}>Author</Text>
+            <Text style={styles.attributeText}>{storyData.author}</Text>
+          </View>
+          <View style={styles.attributePartContainer}>
+            <Text style={styles.attributHeader}>Illustrator</Text>
+            <Text style={styles.attributeText}>{storyData.illustrator}</Text>
+          </View>
         </View>
         <View style={styles.buttonContainer}>
-              <StartButton navigation={navigation} storyData={storyData}/>           
+          {unlocked ?
+            (<StartButton navigation={navigation} storyData={storyData} />)
+            :
+            (<LockedButton />) }
+          
         </View>
         <View>
 
@@ -111,7 +121,7 @@ const StoryDetail = ({navigation}) => {
 
 
       <View style={styles.backButton}>
-           <BackButton navigation={navigation}/>
+        <BackButton navigation={navigation} />
       </View>
       <View style={styles.hearthButton}>
         <HeartButton />
