@@ -5,11 +5,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 2,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     image: {
-        // borderWidth: 1,
-        // borderColor: "red",
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -20,19 +18,18 @@ const styles = StyleSheet.create({
         overflow: 'visible',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: 0.75
+        opacity: 0.75,
+        paddingHorizontal: 10
     },
     text: {
         fontSize: 17,
         color: 'black',
-        opacity: 1
+        opacity: 1,
+        
     },
     symbol: {
         marginVertical: 10,
         fontSize: 25,
-        color: "black",
-        position: 'absolute',
-        right: -5
     },
 })
 
