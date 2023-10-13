@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { createContext, useState } from "react";
 import { BASE_URL } from "../config";
 import { Alert } from "react-native";
@@ -9,11 +9,38 @@ export const ContextAPI = createContext();
 
 export const APIProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [userInfo, setUserInfo] = useState({});
-    const [storyOfInterest, setStoryOfIntrest] = useState(420);
+    const [userInfo, setUserInfo] = useState();
+    const [storyOfInterest, setStoryOfIntrest] = useState(421);
+    const [pageNumb, setPageNumb] = useState(false)
     // const [storyData, setStoryData] = useState({});
 
-    const register = (name, email, password, password_confirmation) => {
+
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //     AsyncStorage.getItem('userInfo').then(res => {
+    //         setUserInfo(JSON.parse(res).data)
+    //         setIsLoading(false);
+    //     })
+
+    // }, [])
+
+    async function getUserInfo() {
+        setIsLoading(true);
+        await AsyncStorage.getItem('userInfo')
+          .then(res => {
+            setTimeout(()=> {
+              setUserInfo(JSON.parse(res));
+              setIsLoading(false);
+            }, 1000)
+            
+          })
+    
+      }
+      useEffect(() => {
+        getUserInfo()
+      }, [])
+
+    const register = ( navigation, name, email, password, password_confirmation) => {
         setIsLoading(true)
         axios
             .post(`${BASE_URL}/api/register`, {
@@ -24,11 +51,11 @@ export const APIProvider = ({ children }) => {
             })
             .then(res => {
                 setIsLoading(false);
-                Alert.alert("Registration Successful", "You can now go to back to login screen to login!")
+                navigation.navigate('login')
+                Alert.alert("Registration Successful", "You can now login with your new account!")
             })
             .catch(e => {
-                console.log(`Registration error: ${e}`);
-                Alert.alert("Registration Failed", "Please check your information again")
+                Alert.alert("Registration Failed",  e.response.data.message)
                 setIsLoading(false);
             });
     };
@@ -40,13 +67,12 @@ export const APIProvider = ({ children }) => {
             email, password
         }).then(res => {
             let userInfo = res.data;
-            console.log(userInfo);
             setUserInfo(userInfo);
             AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
             setIsLoading(false);
         }).catch(e => {
-            console.log(e);
-            Alert.alert('Login failed', 'Check your credentials');
+            console.log(e.response.data.message);
+            Alert.alert('Login failed', e.response.data.message);
             setIsLoading(false);
         })
     }
@@ -55,36 +81,38 @@ export const APIProvider = ({ children }) => {
         setStoryOfIntrest(id);
     }
 
-    // const loadStories = () => {
-    //     setIsLoading(true);
+    const updateTimerID = (timingID) => {
+        setTimerID(timingID)
+    }
 
-    //     axios
-    //         .get(`${BASE_URL}/story`)
-    //         .then(res => {
-    //             let storyData = res.data;
-    //             console.log(storyData);
-    //             setStoryData(storyData);
-    //             AsyncStorage.setItem('storyData', JSON.stringify(storyData));
-    //             setIsLoading(false);
-    //         })
-    //         .catch(e => {
-    //              console.log(e);
-    //              setIsLoading(false);
-    //         })
-    // }
-
+    const logout = async (navigation) => {
+        try {
+            await AsyncStorage.removeItem('userInfo')
+            setUserInfo()
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'login' }],
+              });
+          } catch(e) {
+            console.log(e.message);
+          }
+    }
 
     return (
         <ContextAPI.Provider
             value={{
                 isLoading,
-                userInfo,
                 register,
-                login,  
+                login,
                 storyOfInterest,
-                storyDetailContext
+                storyDetailContext,
+                pageNumb,
+                setPageNumb,
+                logout,
+                userInfo,
+                // setUserInfo
                 // loadStories
-                }}>
+            }}>
             {children}
         </ContextAPI.Provider>
     )
