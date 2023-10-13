@@ -8,11 +8,11 @@ import { useContext } from 'react';
 import { ContextAPI } from '../../context/ContextAPI'
 
 const ReadButton = (props) => {
-  const { storyDetailContext } = useContext(ContextAPI);
+
   const navigation = props.navigation;
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style = {styles.button} onPress={() => {storyDetailContext(props.storyData["id"]); navigation.navigate('storyDetail')}}> 
+      <TouchableOpacity style = {styles.button} onPress={() => { navigation.navigate('storyDetail', {storyID: props.storyData.id})}}> 
         <FontAwesomeIcon icon={faCircle} style={{color: "white", position: 'absolute'}} size={150} />
         <FontAwesomeIcon icon={faPlay} color='#fff' size={60}/>
       </TouchableOpacity>

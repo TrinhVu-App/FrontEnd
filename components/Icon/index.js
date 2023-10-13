@@ -10,6 +10,8 @@ import { Audio } from 'expo-av'
 const Icon = ({ imageID, text, w, h, highlight, word, audioID, isSyncText}) => {
   const [toggle, setToggle] = useState(false)
   const [sound, setSound] = useState()
+
+  // console.log(`${text} + ${w} + ${h}`);
   // const [highlight, setHighLight] = useState(false)
 
   const audio = ICON_STORY_AUDIO_RESOURCE[audioID]
@@ -69,9 +71,10 @@ const Icon = ({ imageID, text, w, h, highlight, word, audioID, isSyncText}) => {
 
 
   return (
-    <View style={[styles.container, { width: (w+ 5), height: (h + 22) }]}>
-      <Pressable style={[styles.image]} onPress={touchHandler}>
+    <View style={[styles.container, { width: (hasSymbol? (w+ 20) : (w)), height: (h + 22) }]}>
+      <Pressable style={[styles.image, { width: (w+ 5), height: (h + 22)}]} onPress={touchHandler}>
         <Animated.Image
+        style={{width:w, height: h, }}
           source={image}
           resizeMode={'contain'}
           width={width}
@@ -84,7 +87,7 @@ const Icon = ({ imageID, text, w, h, highlight, word, audioID, isSyncText}) => {
         </Text>
       )}
       {hasSymbol && (
-        <Text style={styles.symbol}> {symbol} </Text>
+        <Text style={[styles.symbol, {color: (highlight? ("red") : ("black"))}]}>{symbol} </Text>
       )}
       
     </View>

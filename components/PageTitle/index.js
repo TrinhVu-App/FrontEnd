@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styles } from './styles';
 import { Audio } from 'expo-av';
 import { AUDIO_RESOURCE, DEMO_PAGE_DATA_2 } from '../../DEMO_DATA';
@@ -46,11 +46,27 @@ const checkHighlight = (lable, pageTitle) => {
   return result;
 }
 
+const intervalHighlighter = (syncData, timer, titleSentence) => {
+  let result = <Text style={styles.titleWord}>{titleSentence}</Text>
+  result = syncData.map((word, index) => {
+    if (timer == word.s) {
+      return <Text key={index} style={[styles.titleWord, styles.titleWordHightlight]}>{word.w} </Text>
+    }
+    else {
+      return <Text key={index} style={styles.titleWord}>{word.w} </Text>
+    }
+  })
+
+  return result
+}
+
 
 const PageTitle = (props) => {
   //declear some states
   const [sound, setSound] = useState();
   const [syncTitle, setSyncTitle] = useState()
+  const timingID = useRef();
+
 
   //getting title data from props
   const pageTitles = props.pageTitle;
@@ -62,11 +78,11 @@ const PageTitle = (props) => {
   const type = props.type;
   // function changeIsSyncText() = props.changeIsSyncText;
 
-  let audioSource ;
-  if(type == 0) {
+  let audioSource;
+  if (type == 0) {
     audioSource = AUDIO_RESOURCE
   }
-  if(type == 1) {
+  if (type == 1) {
     audioSource = ICON_STORY_AUDIO_RESOURCE
   }
 
@@ -101,53 +117,64 @@ const PageTitle = (props) => {
   useEffect(() => {
     let timer = 0;
     let audioTimer = 0;
+    let highlightIndex;
+    let currentSentence = 0;
+    let timerID;
 
-    titleArrays = pageTitles.map((titleSentence) => {
-      return titleSentence.split(" ");
-    })
-
-    for (let a = 0; a < audios.length; a++) {
-      setTimeout(() => {
-        playSound(audios[a]);
-        // console.log(a);
-      }, audioTimer)
-      audioTimer = audioTimer + audioDurations[a] + 300;
-    }
-
-    //start sync title
-    for (let j = 0; j < titleSyncDatas.length; j++) {
-      //sync title while audio is playing
-      for (let i = 0; i <= titleSyncDatas[j].length; i++) {
-        // setIsSyncText(true)
-        props.changeIsSyncText(true)
-        // console.log(titleSyncDatas[j])
+    clearInterval(timingID.current)
+    setTimeout(()=>{
+      for (let a = 0; a < audios.length; a++) {
         setTimeout(() => {
-          if (i < titleSyncDatas[j].length) {
-            setSyncTitle(titleHighlight(titleSyncDatas[j][i][0], titleArrays[j]))
-            // setSyncTitle(checkHighlight(titleSyncDatas[j][i][0], pageTitles[j]))
-          }
-          else if (j == titleSyncDatas.length - 1) {
-            setSyncTitle(title[j]);
-            // setIsSyncText(false);
-            props.changeIsSyncText(false)
-          }
-          else {
-            setSyncTitle([])
-          }
-        }
-          , timer)
-        if (i < titleSyncDatas[j].length) {
-          timer = timer + titleSyncDatas[j][i][1];
-        } else {
-          timer = timer + titleSyncDatas[j][i - 1][1];
-        }
+          // timingIDs.current = [... timingIDs.current, timerID ]
+          playSound(audios[a]);
+          // console.log(a);
+        }, audioTimer)
+        audioTimer = audioTimer + audioDurations[a] + 300;
       }
-
-      // console.log("Text timeout: " + timer);
-    }
-
-
-
+  
+      // for (let j = 0; j < syncDatas.length; j++) {
+  
+      clearInterval(timingID.current)
+      try {
+        timerID = setInterval(() => {
+  
+          if (timer == 0) {
+            timingID.current = timerID
+          }         
+  
+  
+          if (timer > audioDurations[currentSentence] && currentSentence < syncDatas.length) {
+            timer = 0;
+            currentSentence = currentSentence + 1;
+          }
+  
+          if (timer > audioDurations[currentSentence] || currentSentence >= syncDatas.length) {
+            setSyncTitle(intervalHighlighter(syncDatas[currentSentence-1], -1, pageTitles[currentSentence-1]));
+            console.log("clear timer");
+            clearInterval(timerID)
+          }
+  
+          
+  
+  
+          if (currentSentence < syncDatas.length) {
+            for (let i = 0; i < syncDatas[currentSentence].length; i++) {
+              let word = syncDatas[currentSentence][i];
+              if (word.s <= timer && timer < word.e && highlightIndex != i) {
+                highlightIndex = i;
+                setSyncTitle(intervalHighlighter(syncDatas[currentSentence], word.s, pageTitles[currentSentence]));
+              }
+            }
+          }
+  
+  
+          timer = timer + 100
+        }, 100)
+      } catch (e) {
+        console.log(e.message);
+      }
+    }, 500)
+    
   }, [pageTitles])
 
   useEffect(() => {
@@ -163,7 +190,7 @@ const PageTitle = (props) => {
       setSyncTitle(title[title.length - 1])
     }
 
-  }, [isShowingLable,lable, pageTitles])
+  }, [isShowingLable, lable, pageTitles])
 
 
   return (

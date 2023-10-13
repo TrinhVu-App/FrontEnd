@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
       height: 'auto',
       marginBottom: 25
     },
-    storyList: {
+     storyList: {
       borderWidth: 2,
       borderColor: 'pink',
       margin: 10,

@@ -12,6 +12,8 @@ import { ContextAPI } from '../../context/ContextAPI';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MenuDropDown from '../../components/MenuDropdown';
+import { DEMO_ICON_STORY } from '../../DEMO_ICON_STORY_DATA';
+import { DEMO_STORY_DATA } from '../../DEMO_DATA';
 
 const blue = '#07B8EE';
 const purple = '#A69BD0';
@@ -25,11 +27,14 @@ export default function Library({ navigation }) {
   const getStories = () => {
     setIsLoading(true);
 
+
+
     axios
       .get(`${BASE_URL}/story`)
       .then(res => {
         let data = res.data;
-        setStoryData(data);
+        setStoryData([DEMO_ICON_STORY, DEMO_STORY_DATA])
+        setStoryData(prevData=> [...prevData, ...data]);;
         setIsLoading(false);
       })
       .catch(e => {

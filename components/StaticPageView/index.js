@@ -7,7 +7,7 @@ import {
   IMAGE_RESOURCE,
   DEMO_STORY_DATA
 } from '../../DEMO_DATA'
-import { HEIGHT_SCALE, SourceSansPro, WIDTH_SCALE, screenHeight, screenWidth } from '../../config';
+import { BASE_HEIGHT, BASE_WIDTH, HEIGHT_SCALE, SourceSansPro, WIDTH_SCALE, screenHeight, screenWidth } from '../../config';
 import {
   Canvas,
   useImage,
@@ -18,11 +18,14 @@ import {
   useTouchHandler,
   useValue,
   Group,
+  Fill,
+  Path,
+  Shadow,
 } from "@shopify/react-native-skia";
 import { Audio } from 'expo-av'
 import { useEffect } from 'react';
-import PageTitle from '../../components/PageTitle';
-import BackButton from '../../components/BackButton'
+import PageTitle from '../PageTitle';
+import BackButton from '../BackButton'
 import { ICON_STORY_AUDIO_RESOURCE, ICON_STORY_IMAGE_RESOURCE } from '../../DEMO_ICON_STORY_DATA'
 
 
@@ -38,8 +41,9 @@ const checkCord = (x, y, touchable, type) => {
   }
   let result = [false, '', {}]
   try {
-    if ((touchable.position.x * WIDTH_SCALE) <= x && x <= ((touchable.position.x + touchable.width) * WIDTH_SCALE)) {
+    if ((touchable.position.x + ((screenWidth-BASE_WIDTH)/2)) <= x && x <= (((touchable.position.x + ((screenWidth-BASE_WIDTH)/2) + touchable.width) * WIDTH_SCALE))) {
       if ((touchable.position.y * HEIGHT_SCALE) <= y && y <= ((touchable.position.y + touchable.height) * HEIGHT_SCALE)) {
+        
         result = [true, touchable.name, audioSource[touchable.audio]]
       }
     }
@@ -68,26 +72,32 @@ const itemsHitBoxCheck = (x, y, touchables, type) => {
 }
 
 //Story page view component
-const PageViewScreen = (props) => {
-  const storyData = props.route.params.storyData
-  const navigation = props.navigation;
-  const type = storyData.type;
-  const [currentPage, setCurrentPage] = useState(storyData.pages[0])
+const StaticPageView = ({pageData, storyType, setIsSyncText, isSyncText}) => {
+
+  const currentPage = pageData;
+  const imageID = currentPage.background;
+  const itemsCord = currentPage.touchables
+  const type = storyType
+
   const [lableText, setLableText] = useState("")
   const [isShowingLable, setIsShowingLable] = useState(false)
   const [sound, setSound] = useState();
-  const [isSyncText, setIsSyncText] = useState(false);
-  const [itemsCord, setItemsCord] = useState(currentPage.touchables);
-  const [imageID, setImageID] = useState(currentPage.background)
+  const [animPath, setAnimPath] = useState('');
+
+  let gestureDir = 0;
+  
+  // const [isSyncText, setIsSyncText] = useState(false);
 
   //load background image for canvas
-  let bg;
-  if(storyData.type ==0){
+
+  let bg
+  if (type == 0) {
     bg = useImage(IMAGE_RESOURCE[imageID])
   }
-  if(storyData.type ==1) {
+  if (type == 1) {
     bg = useImage(ICON_STORY_IMAGE_RESOURCE[imageID])
   }
+
 
   //process to display of the title
   const pageTitle = currentPage.title;
@@ -115,41 +125,6 @@ const PageViewScreen = (props) => {
       : undefined;
   }, [sound]);
 
-  //change page handling
-  const flingLeft = Gesture.Fling()
-    .direction(Directions.LEFT)
-    .onEnd(() => {
-      if (!isSyncText) {
-        if (currentPage.ID < storyData.pages.length - 1) {
-          setCurrentPage((currentPage) => {
-            const newPage = storyData.pages[currentPage.ID + 1]
-            setItemsCord(newPage.touchables);
-            setImageID(newPage.background);
-
-            return storyData.pages[currentPage.ID + 1]
-          })
-        }
-      }
-    })
-
-  const flingRight = Gesture.Fling()
-    .direction(Directions.RIGHT)
-    .onEnd(() => {
-      if (!isSyncText) {
-        if (currentPage.ID > 0) {
-          setCurrentPage((currentPage) => {
-            const newPage = storyData.pages[currentPage.ID - 1]
-            setItemsCord(newPage.touchables);
-            setImageID(newPage.background);
-
-            return storyData.pages[currentPage.ID - 1]
-          })
-        }
-      }
-
-    })
-  const composed = Gesture.Simultaneous(flingLeft, flingRight)
-
   //process to handle user's touch, display lable of touchables
   const cx = useValue(10);
   const cy = useValue(10);
@@ -158,7 +133,11 @@ const PageViewScreen = (props) => {
   const lableBgY = useValue(10);
   const touchHander = useTouchHandler({
     onStart: ({ x, y }) => {
+
+      if (x > screenWidth - screenWidth / 3) gestureDir = 1; // if gesture is swipe from left to right , it means co to previous page
+      if (x < screenWidth / 3) gestureDir = -1;
       if (!isSyncText) {
+        console.log("Touch: " +x+ '---' +y);
         const pointerCheck = itemsHitBoxCheck(x, y, itemsCord, type)
         if (pointerCheck[0]) {
           clearTimeout(timeoutID)
@@ -172,7 +151,17 @@ const PageViewScreen = (props) => {
         }
       }
     },
+    onActive: ({ x, y }) => {
+      
+      if (gestureDir != 0) { // if use intend to change page , trigger the aim
+        gestureAnim(gestureDir, Math.round(x), Math.round(y))
+      }
+    },
     onEnd: () => {
+
+      gestureDir = 0;
+      setAnimPath('');
+      console.log("Clear Anim");
       if (!isSyncText) {
         timeoutID = setTimeout(() => {
           setIsShowingLable(false)
@@ -182,12 +171,33 @@ const PageViewScreen = (props) => {
     }
   }, [itemsCord, isSyncText]);
 
+  useEffect(()=> {
+    gestureDir = 0;
+    setIsShowingLable(false)
+      setAnimPath('');
+  }, [pageData])
+
+  
+  const gestureAnim = (dir, absX, absY) => {
+        if (dir == 1) {
+          let A = { x: absX, y: absY }
+          let C = { x: (screenWidth - ((screenWidth - absX + absY / 4) / 7)), y: 0 }
+          let B = { x: A.x + (C.x - A.x) / 4, y: screenHeight }
+          let fixCurve1 = { x: A.x + (C.x - A.x) / 2, y: C.y + (A.y - C.y) / 1.5 };
+          let fixCurve2 = { x: B.x, y: A.y + (B.y - A.y) / 1.25 };
+          setAnimPath('M ' + A.x + ' ' + A.y + ' Q ' + fixCurve1.x + ' ' + fixCurve1.y + ' ' + C.x + ' ' + C.y + ' L ' + B.x + ' ' + B.y + ' Q ' + fixCurve2.x + ' ' + fixCurve2.y + ' ' + A.x + ' ' + A.y + ' Z');
+        }
+    if (dir == -1) {
+        setAnimPath('M ' + absX + ' ' + absY + ' L ' + (absX * 0.5) + ' ' + screenHeight + ' L ' + (absX * 0.3) + ' 0' + ' Z');
+    }
+  }
+
 
 
   return (
-    <GestureHandlerRootView >
-      <GestureDetector gesture={composed}>
         <View style={styles.container}>
+
+  
           <PageTitle
             pageTitle={pageTitle}
             titleAudioDuration={titleAudioDuration}
@@ -197,31 +207,49 @@ const PageViewScreen = (props) => {
             titleAudio={titleAudio}
             type={type}
             changeIsSyncText={setIsSyncText} />
-          <View style={styles.backButton}>
-            <BackButton navigation={navigation} />
-          </View>
-          <Canvas style={styles.canvas} onTouch={touchHander}>
+       
+          
+            
+          
+          <Canvas style={[styles.canvas]} onTouch={touchHander}>
             <Image
               image={bg}
-              fit="fitHeight"
+              fit= 'fitHeight'
               x={0}
               y={0}
               width={screenWidth}
               height={screenHeight}
             />
+
             {isShowingLable && (
               <Group>
                 <Rect x={lableBgX} y={lableBgY} color="gray" width={lableWidth + 10} height={fontSize + 5} />
                 <Text text={lableText} x={cx} y={cy} font={font} color="white" />
               </Group>
             )}
+
+            
+        <Path
+          path={animPath}
+          color={'#eee4b0'}
+        >
+          <Shadow
+            dx={25}
+            dy={15}
+            blur={35}
+            color="black"
+          />
+          <Shadow
+            inner
+            dx={-35}
+            dy={0}
+            blur={25}
+            color="#93b8c4"
+          />
+        </Path>
           </Canvas>
         </View>
-
-
-      </GestureDetector>
-    </GestureHandlerRootView>
   )
 }
 
-export default PageViewScreen
+export default StaticPageView

@@ -1,11 +1,15 @@
 import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styles } from './styles';
 import { Audio } from 'expo-av';
 import { AUDIO_RESOURCE, DEMO_PAGE_DATA_2 } from '../../DEMO_DATA';
 import Icon from '../Icon';
 import { Fragment } from 'react';
 import { ICON_STORY_AUDIO_RESOURCE } from '../../DEMO_ICON_STORY_DATA';
+import { useContext } from 'react';
+import { ContextAPI } from '../../context/ContextAPI';
+import { Sound } from 'expo-av/build/Audio';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const iconReplacer = (title, sync_Data, icons, timer, isSyncText) => {
@@ -61,10 +65,11 @@ const iconReplacer = (title, sync_Data, icons, timer, isSyncText) => {
 }
 
 
-const IconPageTitle = ({ title, audio, audioDuration, sync_data, icons }) => {
+const IconPageTitle = ({ title, audio, audioDuration, sync_data, icons, pageID }) => {
     //declear some states
     const [displayTitle, setDisplayTitle] = useState();
     const [sound, setSound] = useState()
+    const timingID = useRef();
 
     const pageAudio = ICON_STORY_AUDIO_RESOURCE[audio];
 
@@ -82,52 +87,52 @@ const IconPageTitle = ({ title, audio, audioDuration, sync_data, icons }) => {
     }, [sound]);
 
     let timer = 0;
-    let timerID;
+    let timerID ;
+    let highlightIndex;
+
     useEffect(() => {
         //play audio also HERE
-
         playSound(pageAudio)
+  
+        setDisplayTitle(iconReplacer(title, sync_data, icons, -1, false))
+        clearInterval(timingID.current)
+            timerID = setInterval(() => {
+            timingID.current=timerID
 
-
-        for (let i = 0; i <= sync_data.length; i++) {
-            timerID = setTimeout(() => {
-                if(i< sync_data.length) {
-                    setDisplayTitle(iconReplacer(title, sync_data, icons, sync_data[i].s, true))
-                } else {
-                    setDisplayTitle(iconReplacer(title, sync_data, icons, -1, false))
-
-                }
-               
-            }, timer)
-            if(i< sync_data.length){
-                 const addedTiming= sync_data[i].e - sync_data[i].s
-            timer = timer + addedTiming
-            } else {
-                timer = audioDuration
+            if (timer > audioDuration[0]) {
+                setDisplayTitle(iconReplacer(title, sync_data, icons, -1, false))
+                // console.log(timer)
+                console.log('clear  timer ' + timerID);
+                clearInterval(timerID)            
             }
-           
-        }
+
+            if((timer % 2000) == 0) {
+                console.log(`timer ${timerID} still running`);
+            }
+
+            sync_data.forEach((word, index) => {
+                if (word.s <= timer && timer < word.e && highlightIndex!= index) {
+                    highlightIndex = index;
+                    setDisplayTitle(iconReplacer(title, sync_data, icons, word.s, true))
+                }
+            });
+            timer = timer + 200
+        }, 200)
+        // setTimingID(prevTimingID => [...prevTimingID, timerID])
 
 
-        // timerID = setInterval(() => {
-        //     // console.log(timer);
-        //     if (timer > audioDuration[0]) {
-        //         setDisplayTitle(iconReplacer(title, sync_data, icons, -1, false))
-        //         // console.log(timer)
-        //         console.log('clear  timer');
-        //         clearInterval(timerID)
-        //     }
-
-        //     sync_data.forEach((word) => {
-        //         if (word.s == timer) {
-        //             console.log(word.w);
-        //             setDisplayTitle(iconReplacer(title, sync_data, icons, timer, true))
-        //         }
-        //     });
-        //     timer = timer + 10
-        // }, 10)
+        console.log("TimerID: " + timerID);
+        // }
+        
 
     }, [title])
+
+    useEffect(() => {
+        return ()=> {
+            clearInterval(timingID.current);
+            console.log("Clean up");
+        }
+    }, [])
 
 
     return (

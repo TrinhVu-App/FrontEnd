@@ -14,7 +14,7 @@ const StartButton = (props) => {
                 style={styles.buttonContainer}
                 onPress={()=> {
                     // if (storyData.type == 0) {
-                       navigation.navigate("pageView", {"storyData": storyData}) 
+                       navigation.navigate("storyContent", {"storyData": storyData}) 
                     // }
                     // if (storyData.type == 1) {
                     //     navigation.navigate("iconPageView", {"storyData": storyData})

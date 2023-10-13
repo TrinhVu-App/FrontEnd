@@ -56,6 +56,7 @@ export const DEMO_PAGE_DATA_1 = {
     title: ["Hey, do you want to eat some salads?"],
     titleAudio: [18],
     titleAudioDuration: [3672],
+    type: 0,
     sync_data: [
        [ {
             "e": 900,
@@ -150,10 +151,10 @@ export const DEMO_PAGE_DATA_1 = {
             audio: 15,
             position: {
                 x: 348,
-                y: 174
+                y: 169
             },
             width: 55,
-            height: 6
+            height: 26
         },
         {
             name: "Spoon",
@@ -171,6 +172,7 @@ export const DEMO_PAGE_DATA_1 = {
 export const DEMO_PAGE_DATA_2 = {
     ID: 1,
     background:2,
+    type: 0,
     title: ["Let's make a salad bowl!", "Sounds great!"],
     titleAudio: [23, 31],
     titleAudioDuration: [2376, 1776],
@@ -253,6 +255,7 @@ export const DEMO_PAGE_DATA_2 = {
 
 export const DEMO_PAGE_DATA_3 = {
     ID: 2,
+    type: 0,
     background: 3,
     title: ["I will shred some lettuce."],
     titleAudio: [20],
@@ -401,6 +404,7 @@ export const DEMO_PAGE_DATA_3 = {
 export const DEMO_PAGE_DATA_4 = {
     ID: 3,
     background: 4,
+    type: 0,
     title: ["I will boil the eggs and fry the pork."],
     titleAudio: [19],
     titleAudioDuration: [3768],
@@ -546,6 +550,7 @@ export const DEMO_PAGE_DATA_4 = {
 export const DEMO_PAGE_DATA_5 = {
     ID: 4,
     background: 5,
+    type: 0,
     title: ["Don't forget to add some cheese!"],
     titleAudio: [11],
     titleAudioDuration: [5208],
@@ -660,6 +665,7 @@ export const DEMO_PAGE_DATA_5 = {
 export const DEMO_PAGE_DATA_6 = {
     ID: 5,
     background: 6,
+    type: 0,
     title: ["Of course we need some fruits and vegetables."],
     titleAudio: [26],
     titleAudioDuration: [3360],
@@ -819,6 +825,7 @@ export const DEMO_PAGE_DATA_6 = {
 
 export const DEMO_PAGE_DATA_7 = {
     ID: 6,
+    type: 0,
     background: 7,
     title: ["Finally, I will add the dressing."],
     titleAudio: [14],
@@ -936,6 +943,7 @@ export const DEMO_PAGE_DATA_7 = {
 export const DEMO_PAGE_DATA_8 = {
     ID: 7,
     background: 8,
+    type: 0,
     title: ["Now we need to mix them together."],
     titleAudio: [25],
     titleAudioDuration: [5064],
@@ -1049,6 +1057,7 @@ export const DEMO_PAGE_DATA_8 = {
 export const DEMO_PAGE_DATA_9 = {
     ID: 8,
     background: 9,
+    type: 0,
     title: ["The salad bowl looks so delicious!"],
     titleAudio: [35],
     titleAudioDuration: [4752],
@@ -1135,6 +1144,7 @@ export const DEMO_PAGE_DATA_9 = {
 export const DEMO_PAGE_DATA_10 = {
     ID: 9,
     background: 10,
+    type: 0,
     title: ["It's fun to make something together. Now let's enjoy!"],
     titleAudio: [21],
     titleAudioDuration: [4632],
@@ -1264,6 +1274,7 @@ export const DEMO_STORY_DATA = {
     level: "A",
     author: "Hilary Tran",
     illustrator: "Nathan Pham",
+    type: 0,
     pages:
         [
             DEMO_PAGE_DATA_1,

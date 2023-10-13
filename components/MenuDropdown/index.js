@@ -20,7 +20,7 @@ const MenuDropDown = (props) => {
         navigation.navigate("addStory")
     }
     const logoutButtonHandler = () => {
-        logout();
+        logout(navigation);
     }
 
 
