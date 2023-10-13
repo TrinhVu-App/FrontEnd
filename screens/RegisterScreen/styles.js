@@ -11,31 +11,29 @@ const styles = StyleSheet.create({
     image: {
         marginBottom: 50
     },
-    textInput: {
-        backgroundColor: '#fff',
-        width: 350,
-        paddingLeft: 30,
-        height: 50,
-        borderRadius: 30,
-        marginBottom: 20
-    },
-    registerContainter: {
-        flexDirection: 'row',
-        marginTop: 15
-    },
-    registerText: {
-        color: 'white',
-        fontSize: 18
-    },
-    registerLink: {
-        color: 'blue',
-        fontSize: 18
-    },
     header: {
         color: 'white',
         fontSize: 20,
         fontWeight: 'bold',
-        margin: 20
-    }
+        alignSelf: 'center',
+        // borderWidth: 1
+        // margin: 20
+    },
+    bannerContainer: {
+        // borderWidth: 1,
+        flex: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 30
+    },
+    bodyContainer: {
+        flex: 7,
+        // borderWidth: 1,
+        width: '100%',
+        paddingHorizontal: 30
+        // alignItems: 'center',
+        // justifyContent: 'center'
+    },
+
 })
 export default styles
