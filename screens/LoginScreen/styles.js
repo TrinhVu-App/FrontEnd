@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { screenWidth } from "../../config";
 
 const styles = StyleSheet.create({
     container: {
@@ -9,7 +10,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        marginBottom: 50
+        flex: 4,
+        marginTop: 100,
+        alignSelf: 'center'
     },
     textInput: {
         backgroundColor: '#fff',
@@ -35,7 +38,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20,
         fontWeight: 'bold',
-        margin: 20
+        margin: 20,
+        alignSelf: 'center'
     }
 })
 export default styles
