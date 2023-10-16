@@ -80,7 +80,6 @@ export const APIProvider = ({ children }) => {
     const storyDetailContext = (id) => {
         setStoryOfIntrest(id);
     }
-
     const updateTimerID = (timingID) => {
         setTimerID(timingID)
     }

@@ -11,7 +11,7 @@ import { BASE_URL } from '../../config';
 //'../../assets/MonkeyIcon.jpeg'
 const StoryButton = ({navigation, storyData}) => {
 
-    let storyID = 420; 
+    let storyID = storyOfInterest; 
     if (storyData) {
         storyID = storyData["id"];
     }
@@ -37,9 +37,11 @@ const StoryButton = ({navigation, storyData}) => {
     
       const bookmark = setBookmarkPath(storyData);
 
+    console.log(storyOfInterest);
+
+
     return (
-        <TouchableOpacity style={styles.container} onPress={()=> {navigation.navigate('storyDetail', {"storyID": storyID})}}>
-           
+        <TouchableOpacity style={styles.container} onPress={()=> {navigation.navigate('storyDetail', {"storyID": storyID})}}>           
             <View style={styles.imageFrame}>
                 <Image
                     source={thumbnail}
