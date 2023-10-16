@@ -17,11 +17,11 @@ import { set } from 'react-hook-form';
 
 const Stack = createNativeStackNavigator();
 
-const Navigation = () => {
+const Navigation = ({linking}) => {
 
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator >
           <Stack.Screen name="login" component={LoginScreen} options={{ headerShown: false, orientation: 'portrait' }} />
           <Stack.Screen name="register" component={RegisterScreen} options={{ headerShown: false, orientation: 'portrait' }} />
