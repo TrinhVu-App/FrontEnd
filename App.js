@@ -6,26 +6,10 @@ import MenuDropDown from './components/MenuDropdown';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import * as Linking from 'expo-linking'
 import Constants from 'expo-constants';
 
-// export default function App() {
 
-  
-  
-//   return (
-//     <GestureHandlerRootView style={styles.root}>
-//       <APIProvider>
-//         <Navigation />
-//       </APIProvider>
-//     </GestureHandlerRootView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   root: {
-//     flex: 1,
-//   },
-// });
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -41,6 +25,26 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
+
+
+
+  const prefix = Linking.createURL('/');
+  const config = {
+    screens: {
+      storyDetail: {
+        initialRouteName: 'storyHome',
+        path: 'story/:storyID',
+      },
+      // login: '*'
+    }
+  }
+
+  const linking  = {
+    prefixes: [prefix],
+    config: config
+  }
+
+
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
@@ -49,7 +53,8 @@ export default function App() {
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+        console.log(response.notification.request.content.data.link);
+        Linking.openURL(response.notification.request.content.data.link)
     });
 
     return () => {
@@ -61,22 +66,12 @@ export default function App() {
   return (
         <GestureHandlerRootView style={{flex: 1}}>
           <APIProvider>
-            <Navigation />
+            <Navigation linking={linking}/>
           </APIProvider>
         </GestureHandlerRootView>
       );
 }
 
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 2 },
-  });
-}
 
 async function registerForPushNotificationsAsync() {
   let token;
