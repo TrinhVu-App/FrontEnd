@@ -11,7 +11,7 @@ import { BASE_URL } from '../../config';
 //'../../assets/MonkeyIcon.jpeg'
 const StoryButton = ({navigation, storyData}) => {
 
-    let storyID = storyOfInterest; 
+    let storyID ; 
     if (storyData) {
         storyID = storyData["id"];
     }
@@ -37,7 +37,6 @@ const StoryButton = ({navigation, storyData}) => {
     
       const bookmark = setBookmarkPath(storyData);
 
-    console.log(storyOfInterest);
 
 
     return (
