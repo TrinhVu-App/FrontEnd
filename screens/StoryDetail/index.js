@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image } from 'react-native'
+import { View, Text, SafeAreaView, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BackButton from '../../components/BackButton'
 import styles from './styles'
@@ -27,31 +27,31 @@ const StoryDetail = ({ navigation, route }) => {
       setStoryData(DEMO_STORY_DATA);
       setUnlocked(true)
       setImg(require('../../resource/images/Demo_Thumbnail.png'))
-    } else 
-    if (storyID == 421) {
-      setStoryData(DEMO_ICON_STORY);
-      setUnlocked(true)
-      setImg(require('../../resource/images/Demo_Thumbnail_IconStory.png'))
-    } else {
-      setIsLoading(true);
+    } else
+      if (storyID == 421) {
+        setStoryData(DEMO_ICON_STORY);
+        setUnlocked(true)
+        setImg(require('../../resource/images/Demo_Thumbnail_IconStory.png'))
+      } else {
+        setIsLoading(true);
 
-      axios
-        .get(`${BASE_URL}/story/${storyID}`)
-        .then(res => {
-          let data = res.data;
-          setStoryData(() => {
-            const temp = data;
-            setImg({ uri: `${BASE_URL}/story/image/${data.thumbnail}` })
-            return data
-          });
+        axios
+          .get(`${BASE_URL}/story/${storyID}`)
+          .then(res => {
+            let data = res.data;
+            setStoryData(() => {
+              const temp = data;
+              setImg({ uri: `${BASE_URL}/story/image/${data.thumbnail}` })
+              return data
+            });
 
-          setIsLoading(false);
-        })
-        .catch(e => {
-          console.log(e);
-          setIsLoading(false);
-        })
-    }
+            setIsLoading(false);
+          })
+          .catch(e => {
+            console.log(e);
+            setIsLoading(false);
+          })
+      }
 
   }
 
@@ -81,16 +81,23 @@ const StoryDetail = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Spinner visible={isLoading} />
+
+
       <View style={styles.storyThumbContainer}>
+
+        {isLoading ? (
+        <ActivityIndicator size={100} color="#00ff00" />
+        ) : (
+        <>
         <Image
           source={image}
           style={styles.storyThumb}
         />
-        <Image
-          source={bookmark}
-          style={styles.bookmark}
-        />
+          <Image
+            source={bookmark}
+            style={styles.bookmark}
+          />
+        </>)}
       </View>
       <View style={styles.storyDetailContainer}>
         <View style={styles.titleContainer}>
@@ -110,8 +117,8 @@ const StoryDetail = ({ navigation, route }) => {
           {unlocked ?
             (<StartButton navigation={navigation} storyData={storyData} />)
             :
-            (<LockedButton />) }
-          
+            (<LockedButton />)}
+
         </View>
         <View>
 
@@ -123,9 +130,9 @@ const StoryDetail = ({ navigation, route }) => {
       <View style={styles.backButton}>
         <BackButton navigation={navigation} />
       </View>
-      <View style={styles.hearthButton}>
+      {/* <View style={styles.hearthButton}>
         <HeartButton />
-      </View>
+      </View> */}
     </SafeAreaView>
   )
 }
