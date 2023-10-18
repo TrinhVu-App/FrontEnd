@@ -19,7 +19,7 @@ const purple = '#A69BD0';
 export default function Library({ navigation }) {
   const [storyData, setStoryData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isShowingMenu, setIsShowingMenu] = useState(false)
+
 
   const getStories = () => {
     setIsLoading(true);
@@ -41,6 +41,7 @@ export default function Library({ navigation }) {
   }
   useEffect(() => {
     getStories()
+
   }, [])
 
   const renderItem = ({ item }) => {
@@ -62,13 +63,7 @@ export default function Library({ navigation }) {
           <SearchButton />
         </View>
 
-        <View style={styles.HamburgerMenu}>
-          <HambergerMenu
-            setIsShowingMenu={setIsShowingMenu}
-            isShowingMenu={isShowingMenu}
-            navigation={navigation}
-          />
-        </View>
+        
       </View>
 
       <SafeAreaView style={styles.storyListContainer}>
@@ -93,11 +88,7 @@ export default function Library({ navigation }) {
         <LevelFilter2 />
       </View>
 
-      {isShowingMenu && (
-        <View style={styles.menuContainer}>
-          <MenuDropDown navigation={navigation} setIsShowingMenu={setIsShowingMenu} />
-        </View>
-      )}
+      
     </SafeAreaView>
 
   )
