@@ -6,47 +6,115 @@ import TwoPointersSlider from '../TwoPointersSlider'
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import Slider from '../Slider'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import CalendarView from '../CalendarView'
+import axios from 'axios'
+
+
+const sentMapRequest = (selectedDate, selectedTime, calendarDate, timeFrame, callback) => {
+
+  let timeRange = '900,2300'
+  let _date = calendarDate
+  let timeTab = 'open-now'
+  let dayTab = 'today'
+  let timeStart = 900
+  let timeEnd = 2300
 
 
 
-const MapFilter = () => {
-    const [selectedDate, setSelectedDate] = useState("Today")
-    const [selectedTime, setSelectedTime] = useState("Open now")
-    const [timeFrame, setTimeFrame] = useState();
-    
+  if (selectedDate == "Another date") {
+    dayTab = 'custom'
+  } else {
+    dayTab = selectedDate.toLowerCase()
+  }
 
-    useEffect(() => {
-        if (selectedTime == "Open now" && selectedDate!= "Today") {
-            setSelectedTime("Lunch")
-        }
-    }, [selectedDate])
+  if (selectedTime == "Choose your time") {
+    timeTab = 'custom',
+      timeRange = timeFrame.replaceAll(':', '')
+    timeStart = timeFrame.split(',')[0].replaceAll(':', '')
+    timeEnd = timeFrame.split(',')[1].replaceAll(':', '')
+  } else {
+    timeTab = selectedTime.toLowerCase()
+  }
+
+  const params = {
+    time_range: timeRange,
+    date: _date,
+    time_tab: timeTab,
+    day_tab: dayTab,
+    time_start: timeStart,
+    time_end: timeEnd,
+    browser_utc: 420
+  }
+
+
+  axios.get('https://starwinelist.com/api/map/venues', { params })
+    .then(response => {
+      callback(response.data.data)
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
+const MapFilter = ({ callback }) => {
+
+  const date = new Date();
+  const day = date.getUTCDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+
+  const [selectedDate, setSelectedDate] = useState("Today")
+  const [selectedTime, setSelectedTime] = useState("Open now")
+  const [calendarDate, setCalendarDate] = useState(`${year}-${month}-${day}`)
+  const [timeFrame, setTimeFrame] = useState();
+
+
+  useEffect(() => {
+    if (selectedTime == "Open now" && selectedDate != "Today") {
+      setSelectedTime("Lunch")
+    }
+  }, [selectedDate])
+
+  useEffect(() => {
+    if (selectedTime == "Open now") {
+      setSelectedDate("Today")
+    }
+  }, [selectedTime])
 
 
   return (
     <View style={styles.container}>
       <TagSelector
         lable={"Pick a date"}
-        tags={["Today", "Tomorrow", "Another Date"]}
+        tags={["Today", "Tomorrow", "Another date"]}
         callback={setSelectedDate}
-       />
+        pickedTag={selectedDate}
+      />
       <TagSelector
         lable={"Pick a time"}
         tags={["Open now", "Lunch", "Dinner", "Choose your time"]}
         callback={setSelectedTime}
         pickedTag={selectedTime}
-       />
+      />
 
+      {(selectedTime == "Choose your time") && (
         <View style={styles.sliderContainer}>
-            <Slider start={540} end={1380} callback={setTimeFrame}/>
+          <Slider start={540} end={1380} callback={setTimeFrame} />
         </View>
 
+      )}
 
-        <TouchableOpacity style={styles.calendarContainer}>
-            <Text style={styles.calendarText}>Calendar goes here</Text>
-        </TouchableOpacity>
-        
 
-       <Button title='Submit' onPress={()=> console.log(`Date: ${selectedDate}, Time: ${selectedTime}, Time frame: ${timeFrame}`)}/>
+      {(selectedDate == "Another date") && (
+        <CalendarView callback={setCalendarDate} />
+      )}
+
+
+
+
+
+      <Button title='Submit' onPress={() => sentMapRequest(selectedDate, selectedTime, calendarDate, timeFrame, callback)} />
     </View>
   )
 }
