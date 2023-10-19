@@ -15,6 +15,6 @@ console.log("Screen height: " + screenHeight)
 console.log("WIDTH SCALE: " + WIDTH_SCALE);
 console.log("HEIGHT SCALE: "+ HEIGHT_SCALE);
 
-export const BASE_URL = 'https://7473-14-232-245-96.ngrok-free.app'
+export const BASE_URL = 'https://22b1-14-232-245-96.ngrok-free.app'
 export const RESOURCE_PATH = '../../resource/4057_1_4307_1688701526'
 export const SourceSansPro = require("./assets/font/SourceSansPro-Regular.ttf")

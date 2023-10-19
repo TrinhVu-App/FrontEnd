@@ -4,7 +4,7 @@ import styles from './styles'
 import BackButton from '../../components/BackButton'
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faBook, faFileAudio, faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faFileAudio, faMapLocationDot, faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { screenHeight, screenWidth } from '../../config'
 
@@ -14,6 +14,9 @@ const OptionScreen = ({ navigation }) => {
 
     const audioX = useSharedValue(screenWidth)
     const audioY = useSharedValue(screenHeight)
+
+    const mapY = useSharedValue(screenHeight / 2)
+    const mapX = useSharedValue(600)
 
     const addStoryAnimatedStyles = useAnimatedStyle(() => ({
         transform: [
@@ -29,6 +32,13 @@ const OptionScreen = ({ navigation }) => {
         ]
     }))
 
+    const mapAnimatedStyles = useAnimatedStyle(() => ({
+        transform: [
+            { translateX: mapX.value },
+            { translateY: mapY.value },
+        ]
+    }))
+
     const addStoryHandler = () => {
         navigation.navigate("addStory")
     }
@@ -37,18 +47,29 @@ const OptionScreen = ({ navigation }) => {
         navigation.navigate("listAudio")
     }
 
+    const mapHandler = () => {
+        navigation.navigate('map')
+    }
+
     useEffect(() => {
+
+       
         const getIn = navigation.addListener('focus', () => {
-            addStoryX.value = withDelay(100, withSpring(275, { damping: 20 }))
-            addStoryY.value = withDelay(100, withSpring(75, { damping: 20 }))
-            audioX.value = withDelay(100, withSpring(275, { damping: 20 }))
-            audioY.value = withDelay(100, withSpring(80, { damping: 20 }))
+            addStoryX.value = withDelay(100, withSpring(190, { damping: 20 }))
+            addStoryY.value = withDelay(100, withSpring(55, { damping: 20 }))
+            audioX.value = withDelay(100, withSpring(190, { damping: 20 }))
+            audioY.value = withDelay(100, withSpring(60, { damping: 20 }))
+            mapX.value = withDelay(100, withSpring(495, { damping: 20 }))
+            mapY.value = withDelay(100, withSpring(-95, { damping: 20 }))
+
         });
         const getOut = navigation.addListener('blur', () => {
             addStoryX.value = withSpring(-200, { damping: 20 })
             addStoryY.value = withSpring(-200, { damping: 20 })
             audioX.value = withSpring(screenWidth, { damping: 20 })
             audioY.value = withSpring(screenHeight, { damping: 20 })
+            mapX.value = withDelay(100, withSpring(1000, { damping: 20 }))
+            // mapY.value = withDelay(100, withSpring(0, { damping: 20 }))
         });
 
         return
@@ -86,6 +107,16 @@ const OptionScreen = ({ navigation }) => {
                             <FontAwesomeIcon icon={faFileAudio} size={30} color='white' />
                         </View>
                         <Text style={styles.buttonText}>View the list of all the audios</Text>
+                    </TouchableOpacity>
+
+                </Animated.View>
+
+                <Animated.View style={[styles.mapButtonContainer, mapAnimatedStyles]}>
+                    <TouchableOpacity style={[styles.mapButtonTouchable]} onPress={mapHandler}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <FontAwesomeIcon icon={faMapLocationDot} size={30} color='white' />
+                        </View>
+                        <Text style={styles.buttonText}>View the winary map</Text>
                     </TouchableOpacity>
 
                 </Animated.View>

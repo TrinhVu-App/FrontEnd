@@ -19,6 +19,7 @@ import * as Linking from 'expo-linking'
 import * as Device from 'expo-device';
 import OptionScreen from '../../screens/OptionScreen';
 import StoryLoaderScreen from '../../screens/StoryLoaderScreen';
+import MapScreen from '../../screens/MapScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -105,6 +106,8 @@ const Navigation = () => {
       // Listen to expo push notifications
       const subscription = Notifications.addNotificationResponseReceivedListener(response => {
         const url = response.notification.request.content.data.url;
+        // console.log("url: " + url);
+        // Linking.openURL(url)
 
         // Any custom logic to see whether the URL needs to be handled
         //...
@@ -157,6 +160,7 @@ const Navigation = () => {
           <Stack.Screen name="register" component={RegisterScreen} options={{ headerShown: false, orientation: 'portrait' }} />
           <Stack.Screen name="storyHome" component={StoryHome} options={{ headerShown: false, orientation: 'landscape' }} />
           <Stack.Screen name="option" component={OptionScreen} options={{ headerShown: false, orientation: 'landscape' }} />
+          <Stack.Screen name="map" component={MapScreen} options={{ headerShown: false, orientation: 'portrait' }} />
           <Stack.Screen name="storyDetail" component={StoryDetail} options={{ headerShown: false, orientation: 'landscape' }} />
           <Stack.Screen name="library" component={StoryList} options={{ headerShown: false, orientation: 'landscape' }} />
           <Stack.Screen name="storyLoader" component={StoryLoaderScreen} options={{ headerShown: false, orientation: 'landscape' }}/>

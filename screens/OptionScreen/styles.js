@@ -47,6 +47,15 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         flexDirection: 'row'
     },
+    mapButtonContainer: {
+        width: 200,
+        height: 155,
+        backgroundColor: '#9a02cc',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+    }
+    ,
     buttonText: {
         color: 'white',
         fontSize: 15
@@ -55,6 +64,13 @@ const styles = StyleSheet.create({
         width: 300,
         height: "100%",
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        // borderWidth: 1
+    },
+    mapButtonTouchable: {
+        width: 300,
+        height: "100%",
         alignItems: 'center',
         justifyContent: 'space-evenly',
         // borderWidth: 1
