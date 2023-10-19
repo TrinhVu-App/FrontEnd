@@ -41,8 +41,12 @@ const checkCord = (x, y, touchable, type) => {
   }
   let result = [false, '', {}]
   try {
-    if ((touchable.position.x + ((screenWidth-BASE_WIDTH)/2)) <= x && x <= (((touchable.position.x + ((screenWidth-BASE_WIDTH)/2) + touchable.width) * WIDTH_SCALE))) {
-      if ((touchable.position.y * HEIGHT_SCALE) <= y && y <= ((touchable.position.y + touchable.height) * HEIGHT_SCALE)) {
+    const touchableX = touchable.position.x + ((screenWidth-BASE_WIDTH)/2) 
+    const touchableY = touchable.position.y + ((screenHeight-BASE_HEIGHT)/2)
+    const width = touchable.width 
+    const height = touchable.height
+    if ((touchableX) <= x && x <= (touchableX + width)) {
+      if (touchableY <= y && y <= (touchableY+ height)) {
         
         result = [true, touchable.name, audioSource[touchable.audio]]
       }
@@ -193,7 +197,6 @@ const StaticPageView = ({pageData, storyType, setIsSyncText, isSyncText}) => {
   }
 
 
-
   return (
         <View style={styles.container}>
 
@@ -227,6 +230,7 @@ const StaticPageView = ({pageData, storyType, setIsSyncText, isSyncText}) => {
                 <Text text={lableText} x={cx} y={cy} font={font} color="white" />
               </Group>
             )}
+
 
             
         <Path

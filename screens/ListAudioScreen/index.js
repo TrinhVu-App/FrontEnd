@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator } from 'react-native'
 import React from 'react'
 import styles from './styles'
 import BackButton from '../../components/BackButton'
@@ -42,19 +42,26 @@ const ListAudioScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <Spinner visible={isLoading} />
-            <PotraitHeader 
+            <PotraitHeader
                 navigation={navigation}
                 headerText={"Audio List"}
             />
-            <FlatList
-                style={styles.scrollView}
-                data={audioData}
-                keyExtractor={item => item.id}
-                renderItem={
-                    renderItem
-                }
-            />
+            {isLoading ? (
+                <View style={[styles.scrollView, {alignItems: 'center', justifyContent: 'center'}]}>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                </View>
+
+            ) : (
+                <FlatList
+                    style={styles.scrollView}
+                    data={audioData}
+                    keyExtractor={item => item.id}
+                    renderItem={
+                        renderItem
+                    }
+                />)}
+
+
         </View>
     )
 }

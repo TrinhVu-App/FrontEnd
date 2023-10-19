@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
         marginLeft: 70,
         marginBottom: 50,
         shadowColor: 'blue',
+        justifyContent: 'center',
+        alignItems: 'center',
         elevation: 10
     },
     storyThumb: {

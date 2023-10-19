@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingRight: 10,
-        backgroundColor: '#D3E3FD'
+        backgroundColor: 'green'
         // borderWidth: 2,
         // borderBottomWidth: 0,
         // borderTopLeftRadius: 10,
@@ -17,12 +17,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        // borderWidth: 2,
-        // borderColor: 'green'
     },
     headerText: {
         fontSize: 30,
-        color: 'blue'
+        color: 'white'
     },
 })
 

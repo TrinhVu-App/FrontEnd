@@ -2,6 +2,7 @@
   "expo": {
     "name": "StoryApp",
     "slug": "StoryApp",
+    "scheme": "StoryApp",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/icon.png",

@@ -1,10 +1,16 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SelectList } from 'react-native-dropdown-select-list'
 import styles from './styles'
 
 const LevelFilter2 = () => {
     const [selected, setSelected] = React.useState("");
+    
+    useEffect(() => {
+      if (selected) {
+        console.log(selected);
+      }
+    },[selected])
 
     const data = [
         {key: '0', value: 'All levels'},

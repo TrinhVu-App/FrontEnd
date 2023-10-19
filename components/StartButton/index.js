@@ -13,12 +13,7 @@ const StartButton = (props) => {
             <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={()=> {
-                    // if (storyData.type == 0) {
-                       navigation.navigate("storyContent", {"storyData": storyData}) 
-                    // }
-                    // if (storyData.type == 1) {
-                    //     navigation.navigate("iconPageView", {"storyData": storyData})
-                    // }
+                       navigation.navigate("storyLoader", {"storyData": storyData}) 
                 }}>
                 <FontAwesomeIcon icon={faCircle} style={{ color: "#ffffff", position: 'absolute' }} size={135} />
                 <FontAwesomeIcon icon={faPlay} color='#fff' size={60}/>

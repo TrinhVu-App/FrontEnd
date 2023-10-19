@@ -311,21 +311,14 @@ const DEMO_PAGE_DATA_2 = {
                 "w": "a"
             },
             {
-                "e": 9690,
-                "s": 8780,
-                "te": 113,
-                "ts": 104,
-                "i": 0,
-                "w": "magnifying"
-            },
-            {
                 "e": 10480,
-                "s": 9690,
+                "s": 8780,
                 "te": 120,
-                "ts": 115,
-                "i": 0,
-                "w": "glass."
+                "ts": 104,
+                "i": 1,
+                "w": "magnifying glass."
             },
+
             {
                 "e": 10980,
                 "s": 10480,
@@ -376,18 +369,25 @@ const DEMO_PAGE_DATA_2 = {
         },
         {
             name: "Toy Bone",
-            width: 98,
-            height: 65,
+            width: 68,
+            height: 45,
             imageID: 13,
             audioID: 13
         },
         {
             name: "Binoculars",
-            width: 98,
-            height: 65,
+            width: 68,
+            height: 45,
             imageID: 7,
             audioID: 1
-        }
+        },
+        {
+            name: "Magnifying glass",
+            width: 50,
+            height: 60,
+            imageID: 9,
+            audioID: 4
+        },
     ]
 }
 

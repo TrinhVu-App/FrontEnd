@@ -1,43 +1,58 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
-import { faPlus, faRightFromBracket, faFileAudio } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faRightFromBracket, faFileAudio, faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { useContext } from 'react'
 import { ContextAPI } from '../../context/ContextAPI'
+import Animated, { useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 
-const MenuDropDown = (props) => {
-    const {logout} = useContext(ContextAPI);
-    const navigation = props.navigation;
+const MenuDropDown = ({ navigation, isShowing, }) => {
+  const { logout } = useContext(ContextAPI);
+  const [isVisible, setIsVisible] = useState(false)
 
-    const listAudioButtonHandler = () => {
-      props.setIsShowingMenu(false);
-      navigation.navigate("listAudio")
+  const optionButtonHander = () => {
+    navigation.navigate("option")
+  }
+  const logoutButtonHandler = () => {
+    logout(navigation);
+  }
+
+
+
+  const height = useSharedValue(0)
+
+  useEffect(() => {
+    if (isShowing) {
+      setIsVisible(true)
+      height.value = withSpring(175)
+    } else {
+      height.value = withTiming(0, { duration: 200 }, setIsVisible(false))
     }
-    const addStoryButtonHandler = () => {
-        props.setIsShowingMenu(false);
-        navigation.navigate("addStory")
-    }
-    const logoutButtonHandler = () => {
-        logout(navigation);
-    }
+
+  }, [isShowing])
 
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={listAudioButtonHandler}>
-      <FontAwesomeIcon icon={faFileAudio} size={40} color='#ffffff' />
-      </TouchableOpacity>
+    <Animated.View
+      style={[styles.container, {
+        height: height
+      },]}
+    >
+      {isVisible &&
+        (<>
+          <TouchableOpacity onPress={optionButtonHander}>
+            <FontAwesomeIcon icon={faGear} size={40} color='#ffffff' />
+          </TouchableOpacity>
 
-      <TouchableOpacity onPress={addStoryButtonHandler}>
-        <FontAwesomeIcon icon={faPlus} size={40} color='#ffffff'/>
-      </TouchableOpacity>
+          <TouchableOpacity onPress={logoutButtonHandler}>
+            <FontAwesomeIcon icon={faRightFromBracket} size={40} color='#ffffff' />
+          </TouchableOpacity>
 
-      <TouchableOpacity onPress={logoutButtonHandler}>
-        <FontAwesomeIcon icon={faRightFromBracket} size={40} color='#ffffff'/>
-      </TouchableOpacity>
-    </View>
+        </>)
+      }
+    </Animated.View>
   )
 }
 

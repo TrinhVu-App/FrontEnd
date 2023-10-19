@@ -38,19 +38,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center'
     },
-    HamburgerMenu: {
-      flex: 1,
-      // borderColor: 'orange',
-      // borderWidth: 2,
-      padding: 5,
-      justifyContent: 'center',
-      alignItems:'center'
-    },
-    menuContainer: {
-      position: 'absolute',
-      top: "15%",
-      right: 20
-    },
+    
     LevelFilter: {
       // borderColor: 'green',
       // borderWidth: 2,
@@ -64,7 +52,7 @@ const styles = StyleSheet.create({
       flex: 4,
       // borderColor: 'green',
       // borderWidth: 2,
-      padding: 5,
+      padding: 20,
       justifyContent: 'center',
       alignItems: 'flex-end'
     },
