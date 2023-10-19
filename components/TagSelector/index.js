@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const TagSelector = ({ lable, tags, callback , pickedTag}) => {
 
-    const [selectedTag, setSelectedTag] = useState();
+    const [selectedTag, setSelectedTag] = useState(pickedTag);
 
     
     const tagButtons = tags.map((tag, index)=> {
