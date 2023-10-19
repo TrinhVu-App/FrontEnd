@@ -44,7 +44,7 @@ const Slider = ({ start, end, callback}) => {
                 onValuesChangeFinish={(newValues) => {
                     const newMinTime = minutesToTime(newValues[0]);
                     const newMaxTime = minutesToTime(newValues[1]);
-                    callback(newMinTime + " - " + newMaxTime)
+                    callback(newMinTime + "," + newMaxTime)
                 }}
                 
                 min={540}
