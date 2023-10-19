@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import MapFilter from '../../components/MapFilter';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { screenWidth } from '../../config';
+import { screenHeight, screenWidth } from '../../config';
+import MapView, { Marker } from 'react-native-maps';
 
 const MapScreen = ({ navigation }) => {
   const [showFilter, setShowFilter] = useState();
+  const [markerData, setMarkerData] = useState([])
 
   const filterXOffset = 500
   const filterX = useSharedValue(filterXOffset);
@@ -19,10 +21,8 @@ const MapScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (showFilter) {
-      console.log(showFilter);
       filterX.value = withSpring(filterTargetedX, {damping: 20})
     } else {
-      console.log(showFilter);
       filterX.value = withSpring(filterXOffset)
     }
   },[showFilter])
@@ -31,13 +31,28 @@ const MapScreen = ({ navigation }) => {
     setShowFilter(_showFilter => !_showFilter)
     // console.log(showFilter);
   }
+
+  const Markers = markerData.map(( venue, index) => {
+    return (
+    <Marker
+      key={index}
+      coordinate={{ latitude: venue.lat, longitude: venue.lng }}
+      title={venue.name}
+    />
+    )
+  })
+
   return (
     <View style={styles.container}>
 
+      <MapView
+            style={{width: screenHeight, height: screenWidth, borderWidth: 1}}
+      >
+        {Markers}
+    
+        </MapView>
       <Animated.View style={[styles.filterContainer, filterAnimatedStyle]}>
-        {/* {showFilter && ( */}
-          <MapFilter />
-        {/* // )} */}
+          <MapFilter callback={setMarkerData}/>
       </Animated.View>
 
       <View style={styles.filterButtonContainer}>

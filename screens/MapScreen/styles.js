@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
     filterContainer: {
         width: '90%',
-        height: '70%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
