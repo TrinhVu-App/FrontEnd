@@ -21,7 +21,6 @@ const LoginScreen = ({ navigation }) => {
 
 
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo != null) {
       navigation.reset({
         index: 0,
@@ -53,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={{ flex: 6, width: "100%", paddingHorizontal: 30 }}>
         {isLoading ?
           (
-            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', width: "100%", height: 300}}>
               <ActivityIndicator animating={isLoading} size={60} color={'blue'} />
             </View>
 

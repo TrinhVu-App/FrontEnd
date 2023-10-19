@@ -10,8 +10,8 @@ export const ContextAPI = createContext();
 export const APIProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [userInfo, setUserInfo] = useState();
-    const [storyOfInterest, setStoryOfIntrest] = useState(421);
-    const [pageNumb, setPageNumb] = useState(false)
+    // const [storyOfInterest, setStoryOfIntrest] = useState(421);
+    // const [pageNumb, setPageNumb] = useState(false)
     // const [storyData, setStoryData] = useState({});
 
 
@@ -103,10 +103,10 @@ export const APIProvider = ({ children }) => {
                 isLoading,
                 register,
                 login,
-                storyOfInterest,
-                storyDetailContext,
-                pageNumb,
-                setPageNumb,
+                // storyOfInterest,
+                // storyDetailContext,
+                // pageNumb,
+                // setPageNumb,
                 logout,
                 userInfo,
                 // setUserInfo

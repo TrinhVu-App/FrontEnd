@@ -14,19 +14,21 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@react-navigation/stack": "^6.3.17",
     "@reduxjs/toolkit": "^1.9.5",
     "@shopify/react-native-skia": "0.1.196",
+    "adb": "^0.2.0",
     "axios": "^1.5.0",
     "expo": "^49.0.9",
     "expo-asset": "~8.10.1",
     "expo-av": "~13.4.1",
     "expo-constants": "~14.4.2",
     "expo-device": "~5.4.0",
-    "expo-linking": "^5.0.2",
+    "expo-linking": "~5.0.2",
     "expo-notifications": "~0.20.1",
     "expo-status-bar": "~1.6.0",
     "native-notify": "^3.2.0",
@@ -48,8 +50,8 @@
     "react-native-webview": "13.2.2",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
-    "zustand": "^4.4.2",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "zustand": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
