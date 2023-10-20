@@ -106,12 +106,6 @@ const Navigation = () => {
       // Listen to expo push notifications
       const subscription = Notifications.addNotificationResponseReceivedListener(response => {
         const url = response.notification.request.content.data.url;
-        // console.log("url: " + url);
-        // Linking.openURL(url)
-
-        // Any custom logic to see whether the URL needs to be handled
-        //...
-
         // Let React Navigation handle the URL
         listener(url);
       });
@@ -123,32 +117,6 @@ const Navigation = () => {
     },
   }
 
-  // useEffect(() => {
-  //   if (link !== undefined) {
-  //     Linking.openURL(link)
-  //     console.log("link " + link);
-  //   }
-  // }, [link])
-
-
-  useEffect(() => {
-    // registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    // notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    //   setNotification(notification);
-    // });
-
-    // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    //   console.log(response.notification.request.content.data.url);
-    //     // Linking.openURL(response.notification.request.content.data.url)
-    // });
-    
-
-    return () => {
-      // Notifications.removeNotificationSubscription(notificationListener.current);
-      
-    };
-  }, []);
 
   
 
