@@ -21,14 +21,14 @@ const styles = StyleSheet.create({
     sliderSelected: {
         width: '80%',
         height: 5,
-        backgroundColor: 'red',
+        backgroundColor: '#AB2430',
        
     },
     pointer: {
         width: 50,
         height: 30,
         position: 'absolute',
-        backgroundColor: 'red',
+        backgroundColor: '#AB2430',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
