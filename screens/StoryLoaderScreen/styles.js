@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#c3d7e6'
+        // backgroundColor: '#c3d7e6'
     },
     loadingBar: {
         width: 500,

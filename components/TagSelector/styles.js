@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
     selectedTagButon: {
         padding: 10,
-        borderColor: 'red',
+        borderColor: '#AB2430',
         borderWidth: 1,
         borderRadius: 12,
         backgroundColor: '#AB2430',
