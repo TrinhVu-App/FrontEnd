@@ -3,8 +3,10 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        height: '100%',
-        backgroundColor: 'white'
+        height: 'auto',
+        paddingVertical: 20,
+        backgroundColor: 'white',
+        borderRadius: 12
         // alignItems: 'center'
         // borderWidth: 1,
         // borderColor: 'lime'
@@ -23,18 +25,40 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 10
     },
-    calendarContainer: {
-        width: '90%',
+    
+    calendarText: {
+    },
+    headerText: {
         alignSelf: 'center',
-        height: 50,
+        marginVertical: -12,
+        fontSize: 20,
+        fontWeight: "bold"
+    },
+    submitButton: {
+        width: "80%",
+        height: 'auto',
+        borderColor: '#AB2430',
         borderWidth: 1,
-        borderRadius: 12,
-        borderColor: "red",
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: 20
+        alignSelf: 'center',
+        borderRadius: 12,
+        backgroundColor: '#AB2430'
     },
-    calendarText: {
+    submitButtonText: {
+        fontSize: 20,
+        color: "white"
+    },
+    cancelButton: {
+        width: 'auto',
+        height: 'auto',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf:'flex-end',
+        marginTop: -13,
+        marginRight: -13,
+        borderRadius: 12,
+        // backgroundColor: 'white'
     }
     
 })

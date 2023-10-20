@@ -8,6 +8,8 @@ import Slider from '../Slider'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import CalendarView from '../CalendarView'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faRectangleXmark } from '@fortawesome/free-solid-svg-icons'
 
 
 const sentMapRequest = (selectedDate, selectedTime, calendarDate, timeFrame, callback) => {
@@ -56,7 +58,7 @@ const sentMapRequest = (selectedDate, selectedTime, calendarDate, timeFrame, cal
     });
 }
 
-const MapFilter = ({ callback }) => {
+const MapFilter = ({ callback, toggleFilter }) => {
 
   const date = new Date();
   const day = date.getUTCDate();
@@ -85,6 +87,10 @@ const MapFilter = ({ callback }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.cancelButton} onPress={()=>  toggleFilter(_prevState => !_prevState) }>
+        <FontAwesomeIcon icon={faRectangleXmark} color='#AB2430' size={50} />
+      </TouchableOpacity>
+      <Text style={styles.headerText}>Filter winebars/restaurants</Text>
       <TagSelector
         lable={"Pick a date"}
         tags={["Today", "Tomorrow", "Another date"]}
@@ -113,8 +119,10 @@ const MapFilter = ({ callback }) => {
 
 
 
-
-      <Button title='Submit' onPress={() => sentMapRequest(selectedDate, selectedTime, calendarDate, timeFrame, callback)} />
+      <TouchableOpacity style={styles.submitButton} onPress={() => { sentMapRequest(selectedDate, selectedTime, calendarDate, timeFrame, callback); toggleFilter(_prevState => !_prevState) }}>
+        <Text style={styles.submitButtonText}>Submit</Text>
+      </TouchableOpacity>
+      {/* <Button title='Submit' onPress={() => {sentMapRequest(selectedDate, selectedTime, calendarDate, timeFrame, callback); toggleFilter(_prevState => !_prevState)}} /> */}
     </View>
   )
 }
