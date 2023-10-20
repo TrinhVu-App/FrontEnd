@@ -19,9 +19,9 @@ const CalendarView = ({ callback }) => {
 
 
     return (
-        <View style={styles.container}>
+        <View style={styles.calendarContainer}>
             <Calendar
-
+                minDate={Date()}
                 onDayPress={day => {
                     setSelected(day.dateString);
                 }}
